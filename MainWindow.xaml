@@ -11,11 +11,15 @@
             <ColumnDefinition Width="23*"/>
             <ColumnDefinition Width="77*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbFirstName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,87,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbLastName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbAge" Grid.Column="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+        <TextBox x:Name="tbFirstName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+        <TextBox x:Name="tbLastName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+        <TextBox x:Name="tbAge" Grid.Column="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
         <Button x:Name="btnOK" Grid.Column="1" Content="Get Quote" HorizontalAlignment="Left" Margin="168,242,0,0" VerticalAlignment="Top" Click="btnOK_Click"/>
-        <TextBlock x:Name="tbQuote" Grid.Column="1" HorizontalAlignment="Left" Margin="42,299,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="79" Width="291"/>
+        <TextBlock x:Name="tbQuote" Grid.Column="1" HorizontalAlignment="Left" Margin="42,299,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="79" Width="291"/>
+        <Label Grid.Column="1" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.469,0.945"/>
+        <Label Grid.Column="1" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top"/>
+        <Label Grid.Column="1" Content="First name" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="image" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="366,299,0,0" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>

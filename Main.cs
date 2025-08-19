@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace HHG_WPF_Fileversion;
 
@@ -36,37 +37,6 @@ class Program
         }
     }
 
-//    static void Main(string[] args)
-//    {
-//        //call methods
-//        ReadFromFile();
-//        ReadInput();
-
-//        DateTime date = DateTime.Now;
-//        const string dateFormat = "dd MMMM, yyyy";
-//        const string timeFormat = "HH:mm:ss";
-//        const string dateMessage = "The date is:";
-//        const string timeMessage = "The time is:";
-//        const int dontPanic = 42;
-//        const string dontPanicText = @"
-// _____            _ _     _____           _
-//|  _  \          ( ) |   | ___ \         (_)     
-//| | | |___  _ __ |/| |_  | |_/ /_ _ _ __  _  ___ 
-//| | | / _ \| '_ \  | __| |  __/ _` | '_ \| |/ __|
-//| |/ / (_) | | | | | |_  | | | (_| | | | | | (__ 
-//|___/ \___/|_| |_|  \__| \_|  \__,_|_| |_|_|\___|
-                                                 
-//";
-
-//        if (player.Age == dontPanic)
-//            Console.WriteLine(dontPanicText);
-//        else
-//        {
-//            Console.WriteLine($"Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:\n\"{greetingList[date.Second]}\"\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}");
-//            Console.WriteLine($"Quote used is located at position {greetingList.IndexOf(greetingList[date.Second])} in a list of {greetingList.Count} items.");
-//        }
-//    } //end of Main
-
     public static bool IsNull(string? input)
     {
         //not really necessary to create a method just for IsNullOrEmpty but I wanted to test my own understanding
@@ -75,6 +45,19 @@ class Program
             return true;
         else
             return false;
+    }
+
+    public static BitmapImage ShowImage()
+    {
+        string fileDir = "Data";
+        string fileName = "hhg2.png";
+
+        string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        string filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+        BitmapImage bitmapImage = new BitmapImage(new Uri(filePath));
+
+        return bitmapImage;        
     }
 
     public static string ReadInput(string firstName, string lastName, string age)
@@ -95,26 +78,16 @@ class Program
         const string dateMessage = "The date is:";
         const string timeMessage = "The time is:";
         const int dontPanic = 42;
-
-        const string dontPanicText = @"
-         _____            _ _     _____           _
-        |  _  \          ( ) |   | ___ \         (_)     
-        | | | |___  _ __ |/| |_  | |_/ /_ _ _ __  _  ___ 
-        | | | / _ \| '_ \  | __| |  __/ _` | '_ \| |/ __|
-        | |/ / (_) | | | | | |_  | | | (_| | | | | | (__ 
-        |___/ \___/|_| |_|  \__| \_|  \__,_|_| |_|_|\___|
-
-        ";
-
+        
         if (player.Age == dontPanic)
-            return dontPanicText;
+        {
+            return "";
+        }   
         else
         {
-            string temp = $"Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:\n\"{greetingList[date.Second]}\"\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}";
-            //$"Quote used is located at position {greetingList.IndexOf(greetingList[date.Second])} in a list of {greetingList.Count} items.");
-            return temp;
-             //Console.WriteLine($"Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:\n\"{greetingList[date.Second]}\"\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}");
-            //Console.WriteLine($"Quote used is located at position {greetingList.IndexOf(greetingList[date.Second])} in a list of {greetingList.Count} items.");
+            string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:\n\"{greetingList[date.Second]}\"\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n'";
+            string temp2="Quote used is located at position {greetingList.IndexOf(greetingList[date.Second])} in a list of {greetingList.Count} items.";
+            return temp+temp2;
         }
 
         //while (IsNull(result))

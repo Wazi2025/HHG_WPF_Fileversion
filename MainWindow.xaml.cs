@@ -25,8 +25,10 @@ namespace HHG_WPF_Fileversion
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            image.Source = Program.ShowImage();
+
             Program.ReadFromFile();
-            tbQuote.Text = Program.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text);
+            tbQuote.Text = Program.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text);            
         }
     }
 }
