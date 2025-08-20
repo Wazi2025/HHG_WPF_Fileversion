@@ -31,8 +31,11 @@ public partial class MainWindow : Window
 
         if (player.Age== player.dontPanic)
         {
-            image.Visibility = Visibility.Visible;
-            image.Source = Program.ShowImage();
+            //No need to reload 
+            if(image.Source is null) 
+                image.Source = Program.ShowImage();
+
+            image.Visibility = Visibility.Visible;            
         }
         else
         {
