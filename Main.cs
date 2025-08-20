@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace HHG_WPF_Fileversion;
 
-class Program
+namespace HHG_WPF_Fileversion
 {
     public class Player
     {
@@ -13,35 +12,33 @@ class Program
         public int Age { get; set; }
 
         public int dontPanic = 42;
-      
 
-    }//end of class Player
-        
+        //string list to store quotes from file
+        public List<string> greetingList;
 
-    //instantiate player object at Program class level 
-    //so it's accessible from any method within Program class as long as the methods are static
-    public static Player player = new Player();
-        
-    //create a new string list which also needs to be static since we are populating it inside the InitializeList method
-    static List<string> greetingList = new List<string>();
-
-    static public void ReadFromFile()
-    {
-        string fileDir = "Data";
-        string fileName = "quotes.txt";
-        string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-        string filePath = Path.Combine(projectRoot, fileDir, fileName);
-
-        //Open a streamReader
-        using StreamReader streamReader = new StreamReader(filePath);
-
-        //Add each line to the greetinglist as long as streamReader hasn't reached the end of the stream i.e. the file
-        while (!streamReader.EndOfStream)
+        public void ReadFromFile(Player player)
         {
-            greetingList.Add(streamReader.ReadLine());
-        }
-    }
+            //Instantiate list
+            greetingList = new List<string>();
 
+            string fileDir = "Data";
+            string fileName = "quotes.txt";
+            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+            //Open a streamReader
+            using StreamReader streamReader = new StreamReader(filePath);
+
+            //Add each line to the greetinglist as long as streamReader hasn't reached the end of the stream i.e. the file
+            while (!streamReader.EndOfStream)
+            {
+                player.greetingList.Add(streamReader.ReadLine());
+            }
+        }
+    }//end of class Player
+    class Program
+{
+   
     public static BitmapImage ShowImage()
     {
         string fileDir = "Data";
@@ -55,14 +52,14 @@ class Program
         return bitmapImage;        
     }
 
-    public static void ClearPlayerData()
+    public static void ClearPlayerData(Player player)
     {
         player.FirstName = "";
         player.LastName = "";
         player.Age = 0;
     }
 
-    public static string ReadInput(string firstName, string lastName, string age)
+    public static string ReadInput(string firstName, string lastName, string age, Player player)
     {
         //ask the user for their firstname, lastname and age and add these values to their respective player properties
         
@@ -70,8 +67,7 @@ class Program
         player.LastName = lastName;
 
         if(int.TryParse(age, out int result))
-          player.Age = result;
-
+            player.Age = result;
 
         //Show output
         DateTime date = DateTime.Now;
@@ -79,20 +75,11 @@ class Program
         const string timeFormat = "HH:mm:ss";
         const string dateMessage = "The date is:";
         const string timeMessage = "The time is:";
-        
-        
-        //if (player.Age == dontPanic)
-        //{
-        //    //ShowImage();
-        //    return "";
-        //}   
-        //else
-        //{
-            string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:\n\"{greetingList[date.Second]}\"\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n'";
-            string temp2="Quote used is located at position {greetingList.IndexOf(greetingList[date.Second])} in a list of {greetingList.Count} items.";
-            return temp+temp2;
-        //}
-
+                        
+        string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
+        string temp2= $"'Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items.'";
+        return temp+temp2;
         
     }//end of ReadInput
 } //end of class Program
+}
