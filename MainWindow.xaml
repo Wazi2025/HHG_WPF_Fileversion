@@ -8,18 +8,22 @@
         Title="MainWindow" Height="650" Width="800">
     <Grid Margin="0,0,0,-81">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="23*"/>
-            <ColumnDefinition Width="77*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="22*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="tbFirstName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbLastName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbAge" Grid.Column="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <Button x:Name="btnOK" Grid.Column="1" Content="Get Quote" HorizontalAlignment="Left" Margin="168,242,0,0" VerticalAlignment="Top" Click="btnOK_Click"/>
-        <TextBlock x:Name="tbQuote" HorizontalAlignment="Left" Margin="96,284,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="238" Width="324" Grid.ColumnSpan="2"/>
-        <Label Grid.Column="1" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.469,0.945"/>
-        <Label Grid.Column="1" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top"/>
-        <Label Grid.Column="1" Content="First name" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbFirstName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406" Height="18"/>
+        <TextBox x:Name="tbLastName" Grid.Column="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406" Height="18"/>
+        <TextBox x:Name="tbAge" Grid.Column="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406" Height="18"/>
+        <Button x:Name="btnOK" Grid.Column="1" Content="Get Quote" HorizontalAlignment="Left" Margin="177,244,0,0" VerticalAlignment="Top" Click="btnOK_Click" Height="20" Width="59" RenderTransformOrigin="0.356,0.552" IsDefault="True"/>
+        <Label Grid.Column="1" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.469,0.945" Height="26" Width="31"/>
+        <Label Grid.Column="1" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top" Height="26" Width="64"/>
+        <Label Grid.Column="1" Content="First name" HorizontalAlignment="Left" Margin="42,46,0,0" VerticalAlignment="Top" Height="26" Width="65"/>
         <Image x:Name="image" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="366,299,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBlock x:Name="tbQuote" Grid.Column="1" HorizontalAlignment="Left" Margin="42,304,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="180" Width="419">
+            <TextBlock.Style>
+                <Style/>
+            </TextBlock.Style>
+        </TextBlock>
 
     </Grid>
 </Window>

@@ -4,44 +4,45 @@ namespace HHG_WPF_Fileversion
 {
 
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
-{
-    //adding player field so we can instantiate player object in MainWindow's constructor
-    private Player player;
-    public MainWindow()
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
+        //adding player field so we can instantiate player object in MainWindow's constructor
+        private Player player;
+        public MainWindow()
+        {
+            InitializeComponent();
 
-        //Instantiate player object and pass it as a parameter whenever we need to access it outside this class
-        player = new Player();
+            //Instantiate player object and pass it as a parameter whenever we need to access it outside this class
+            player = new Player();
 
-        player.ReadFromFile(player);
-        tbFirstName.Focus();
-    }
+            player.ReadFromFile(player);
+            tbFirstName.Focus();
+        }
 
-    private void btnOK_Click(object sender, RoutedEventArgs e)
-    {
-        image.Visibility = Visibility.Hidden;
-        Player.ClearPlayerData(player);
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            image.Visibility = Visibility.Hidden;
+            Player.ClearPlayerData(player);
 
             Player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
 
-        if (player.Age== player.dontPanic)
-        {
-            //No need to reload 
-            if (image.Source is null) 
-                image.Source = Player.ShowImage();
+            if (player.Age == player.dontPanic)
+            {
+                //No need to reload 
+                if (image.Source is null)
+                    image.Source = Player.ShowImage();
 
-            image.Visibility = Visibility.Visible;            
-        }
-        else
-        {
-            image.Visibility = Visibility.Hidden;
-            tbQuote.Text = Player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
+                image.Visibility = Visibility.Visible;
+                tbQuote.Text = "";
+            }
+            else
+            {
+                image.Visibility = Visibility.Hidden;
+                tbQuote.Text = Player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
+            }
         }
     }
-}
 }

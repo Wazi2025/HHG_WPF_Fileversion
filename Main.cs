@@ -74,13 +74,13 @@ namespace HHG_WPF_Fileversion
             const string timeMessage = "The time is:";
 
             string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
-            string temp2 = $"'Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items'";
+            string temp2 = $"Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items";
             return temp + temp2;
 
         }//end of ReadInput
     }//end of class Player
     class Program
-{
-    
-} //end of class Program
+    {
+
+    } //end of class Program
 }
