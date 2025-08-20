@@ -34,52 +34,53 @@ namespace HHG_WPF_Fileversion
             {
                 player.greetingList.Add(streamReader.ReadLine());
             }
+        }// end of ReadFromFile method
+
+        public static BitmapImage ShowImage()
+        {
+            string fileDir = "Data";
+            string fileName = "hhg2.png";
+
+            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+            BitmapImage bitmapImage = new BitmapImage(new Uri(filePath));
+
+            return bitmapImage;
         }
+
+        public static void ClearPlayerData(Player player)
+        {
+            player.FirstName = "";
+            player.LastName = "";
+            player.Age = 0;
+        }
+
+        public static string ReadInput(string firstName, string lastName, string age, Player player)
+        {
+            //ask the user for their firstname, lastname and age and add these values to their respective player properties
+
+            player.FirstName = firstName;
+            player.LastName = lastName;
+
+            if (int.TryParse(age, out int result))
+                player.Age = result;
+
+            //Show output
+            DateTime date = DateTime.Now;
+            const string dateFormat = "dd MMMM, yyyy";
+            const string timeFormat = "HH:mm:ss";
+            const string dateMessage = "The date is:";
+            const string timeMessage = "The time is:";
+
+            string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
+            string temp2 = $"'Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items'";
+            return temp + temp2;
+
+        }//end of ReadInput
     }//end of class Player
     class Program
 {
-   
-    public static BitmapImage ShowImage()
-    {
-        string fileDir = "Data";
-        string fileName = "hhg2.png";
-
-        string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-        string filePath = Path.Combine(projectRoot, fileDir, fileName);
-
-        BitmapImage bitmapImage = new BitmapImage(new Uri(filePath));
-
-        return bitmapImage;        
-    }
-
-    public static void ClearPlayerData(Player player)
-    {
-        player.FirstName = "";
-        player.LastName = "";
-        player.Age = 0;
-    }
-
-    public static string ReadInput(string firstName, string lastName, string age, Player player)
-    {
-        //ask the user for their firstname, lastname and age and add these values to their respective player properties
-        
-        player.FirstName = firstName;
-        player.LastName = lastName;
-
-        if(int.TryParse(age, out int result))
-            player.Age = result;
-
-        //Show output
-        DateTime date = DateTime.Now;
-        const string dateFormat = "dd MMMM, yyyy";
-        const string timeFormat = "HH:mm:ss";
-        const string dateMessage = "The date is:";
-        const string timeMessage = "The time is:";
-                        
-        string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
-        string temp2= $"'Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items.'";
-        return temp+temp2;
-        
-    }//end of ReadInput
+    
 } //end of class Program
 }

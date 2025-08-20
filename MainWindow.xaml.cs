@@ -25,22 +25,22 @@ public partial class MainWindow : Window
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
         image.Visibility = Visibility.Hidden;
-        Program.ClearPlayerData(player);
+        Player.ClearPlayerData(player);
 
-        Program.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
+            Player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
 
         if (player.Age== player.dontPanic)
         {
             //No need to reload 
-            if(image.Source is null) 
-                image.Source = Program.ShowImage();
+            if (image.Source is null) 
+                image.Source = Player.ShowImage();
 
             image.Visibility = Visibility.Visible;            
         }
         else
         {
             image.Visibility = Visibility.Hidden;
-            tbQuote.Text = Program.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
+            tbQuote.Text = Player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
         }
     }
 }
