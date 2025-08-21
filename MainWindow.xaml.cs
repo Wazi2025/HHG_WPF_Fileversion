@@ -23,6 +23,7 @@ namespace HHG_WPF_Fileversion
         private void btnOK_Click(object sender, RoutedEventArgs e)
             {
             bool missingInfo = false;
+            const string warning = "Please fill out all fields!";
 
             image.Visibility = Visibility.Hidden;
             player.ClearPlayerData(player);
@@ -30,11 +31,11 @@ namespace HHG_WPF_Fileversion
             tbQuote.Text = player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
 
             //check for textbox values
-            if (String.IsNullOrWhiteSpace(tbFirstName.Text) || String.IsNullOrWhiteSpace(tbLastName.Text))// || String.IsNullOrWhiteSpace(tbAge.Text))
+            if (String.IsNullOrWhiteSpace(tbFirstName.Text) || String.IsNullOrWhiteSpace(tbLastName.Text) || String.IsNullOrWhiteSpace(tbAge.Text))
                 {
                 missingInfo = true;
 
-                tbQuote.Text = "Please fill in all fields!";
+                tbQuote.Text = warning;
                 image.Visibility = Visibility.Visible;
                 image.Opacity = 0.25;
                 image.Source = player.ShowImage(player, missingInfo);

@@ -42,11 +42,9 @@ namespace HHG_WPF_Fileversion
             {
             string fileDir = "Data";
             string fileName = "hhg2.png";
-            //string fileNameDontPanic = "dontPanic.jpg";
 
             string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
 
-            //if (String.IsNullOrWhiteSpace(player.FirstName) || String.IsNullOrWhiteSpace(player.LastName))// || (player.Age == 0)) ;
             if (missingInfo)
                 fileName = "dontPanic.jpg";
             else
