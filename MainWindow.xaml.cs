@@ -3,81 +3,81 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace HHG_WPF_Fileversion
-    {
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-        {
+    {
         //adding player field so we can instantiate player object in MainWindow's constructor
         private Player player;
 
-        //only one AnimationClock can be active so we have to add both animations to a TransformGroup
+        //only one Animation can be active so we have to add both animations to a TransformGroup
         //and then add the TransformGroup to the image RenderTransform in the InitImageControls method
-
         private ScaleTransform zoomTransform = new ScaleTransform(1, 1);
         private RotateTransform rotateTransform = new RotateTransform(0);
         private TransformGroup transformGroup = new TransformGroup();
 
         public MainWindow()
-            {
+        {
             InitializeComponent();
+            this.SizeToContent = SizeToContent.WidthAndHeight;
 
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
             player = new Player();
 
             player.ReadFromFile(player);
             tbFirstName.Focus();
-            }
+        }
 
         private void FadeInImage(double maxOpacity)
-            {
+        {
             DoubleAnimation fadeIn = new DoubleAnimation(0, maxOpacity, TimeSpan.FromSeconds(5));
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-            }
+        }
 
         private void ZoomIn()
-            {
+        {
             DoubleAnimation zoomIn = new DoubleAnimation
-                {
+            {
                 From = 1.0,
                 To = 1.5,
                 Duration = TimeSpan.FromSeconds(2),
                 AutoReverse = true,
                 RepeatBehavior = RepeatBehavior.Forever
-                };
+            };
 
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
-            }
+        }
 
         private void StartImageSpin()
-            {
+        {
             // Create the animation
             DoubleAnimation rotateAnimation = new DoubleAnimation
-                {
+            {
                 From = 0,
                 To = 360,
                 Duration = TimeSpan.FromSeconds(10),
                 RepeatBehavior = RepeatBehavior.Forever
-                };
+            };
 
             // Apply the animation to the RotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
-            }
+        }
 
         private void InitImageControl()
-            {
+        {
             image.RenderTransformOrigin = new Point(0.5, 0.5);
             transformGroup.Children.Add(zoomTransform);
             transformGroup.Children.Add(rotateTransform);
             image.RenderTransform = transformGroup;
-            }
+        }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
-            {
+        {
             bool missingInfo = false;
-            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.";
+            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.\n\n - Prostetnic Vogon Jeltz -";
 
             image.Visibility = Visibility.Hidden;
             player.ClearPlayerData(player);
@@ -86,7 +86,7 @@ namespace HHG_WPF_Fileversion
 
             //check for textbox values
             if (String.IsNullOrWhiteSpace(tbFirstName.Text) || String.IsNullOrWhiteSpace(tbLastName.Text) || String.IsNullOrWhiteSpace(tbAge.Text))
-                {
+            {
                 missingInfo = true;
 
                 tbQuote.Text = warning;
@@ -96,11 +96,10 @@ namespace HHG_WPF_Fileversion
 
                 FadeInImage(0.25);
                 ZoomIn();
-                //StartImageSpin();
-                }
+            }
             else
             if (player.Age == player.dontPanic)
-                {
+            {
                 image.Visibility = Visibility.Visible;
 
                 image.Source = player.ShowImage(player, missingInfo);
@@ -108,17 +107,16 @@ namespace HHG_WPF_Fileversion
 
                 FadeInImage(1.0);
                 StartImageSpin();
-                }
-            else
-                {
-                image.Visibility = Visibility.Hidden;
-                //tbQuote.Text = player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
-                }
             }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+            else
             {
-            InitImageControl();
+                image.Visibility = Visibility.Hidden;
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitImageControl();
+        }
     }
+}
