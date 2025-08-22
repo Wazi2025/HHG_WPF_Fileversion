@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace HHG_WPF_Fileversion
@@ -23,8 +24,31 @@ namespace HHG_WPF_Fileversion
 
         private void FadeInImage()
             {
-            DoubleAnimation fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(2));
+            DoubleAnimation fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            }
+
+        private void StartImageSpin()
+            {
+            // Create a RotateTransform and set it on the image
+            RotateTransform rotateTransform = new RotateTransform();
+            image.RenderTransform = rotateTransform;
+
+            // Set the rotation center to the center of the image
+            image.RenderTransformOrigin = new Point(0.5, 0.5); // Center
+
+            // Create the animation
+            DoubleAnimation rotateAnimation = new DoubleAnimation
+                {
+                From = 0,
+                To = 360,
+                Duration = TimeSpan.FromSeconds(10),
+                RepeatBehavior = RepeatBehavior.Forever
+                };
+
+
+            // Apply the animation to the RotateTransform
+            rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
             }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -44,9 +68,10 @@ namespace HHG_WPF_Fileversion
 
                 tbQuote.Text = warning;
                 image.Visibility = Visibility.Visible;
-                //image.Opacity = 0.25;
+                image.Opacity = 0.25;
                 image.Source = player.ShowImage(player, missingInfo);
                 FadeInImage();
+                StartImageSpin();
                 }
             else
             if (player.Age == player.dontPanic)
