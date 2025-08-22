@@ -30,15 +30,14 @@ namespace HHG_WPF_Fileversion
             tbFirstName.Focus();
             }
 
-        private void FadeInImage()
+        private void FadeInImage(double maxOpacity)
             {
-            DoubleAnimation fadeIn = new DoubleAnimation(0, 0.25, TimeSpan.FromSeconds(5));
+            DoubleAnimation fadeIn = new DoubleAnimation(0, maxOpacity, TimeSpan.FromSeconds(5));
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
             }
 
         private void ZoomIn()
             {
-
             DoubleAnimation zoomIn = new DoubleAnimation
                 {
                 From = 1.0,
@@ -54,7 +53,6 @@ namespace HHG_WPF_Fileversion
 
         private void StartImageSpin()
             {
-
             // Create the animation
             DoubleAnimation rotateAnimation = new DoubleAnimation
                 {
@@ -67,7 +65,6 @@ namespace HHG_WPF_Fileversion
 
             // Apply the animation to the RotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
-
             }
 
         private void InitImageControl()
@@ -81,12 +78,7 @@ namespace HHG_WPF_Fileversion
         private void btnOK_Click(object sender, RoutedEventArgs e)
             {
             bool missingInfo = false;
-            const string warning = "Please fill out all fields!";
-
-            //image.RenderTransformOrigin = new Point(0.5, 0.5);
-            //transformGroup.Children.Add(zoomTransform);
-            //transformGroup.Children.Add(rotateTransform);
-            //image.RenderTransform = transformGroup;
+            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.";
 
             image.Visibility = Visibility.Hidden;
             player.ClearPlayerData(player);
@@ -103,9 +95,9 @@ namespace HHG_WPF_Fileversion
 
                 image.Source = player.ShowImage(player, missingInfo);
 
-                FadeInImage();
+                FadeInImage(0.25);
                 ZoomIn();
-                StartImageSpin();
+                //StartImageSpin();
                 }
             else
             if (player.Age == player.dontPanic)
@@ -113,8 +105,10 @@ namespace HHG_WPF_Fileversion
                 image.Visibility = Visibility.Visible;
 
                 image.Source = player.ShowImage(player, missingInfo);
-                FadeInImage();
                 tbQuote.Text = "";
+
+                FadeInImage(1.0);
+                StartImageSpin();
                 }
             else
                 {
