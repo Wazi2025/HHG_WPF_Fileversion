@@ -62,7 +62,6 @@ namespace HHG_WPF_Fileversion
                 RepeatBehavior = RepeatBehavior.Forever
                 };
 
-
             // Apply the animation to the RotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
             }
