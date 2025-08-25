@@ -129,8 +129,11 @@ namespace HHG_WPF_Fileversion
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
             {
             //randomize position
-
             btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
+
+            //attach button to mouse
+            //Point position = Mouse.GetPosition(this);
+            //btnOK.Margin = new Thickness(position.X, position.Y, 0, 0);
             }
         }
     }
