@@ -22,6 +22,8 @@ namespace HHG_WPF_Fileversion
         private int width;
         private int height;
 
+        private Thickness original;
+
         public MainWindow()
             {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace HHG_WPF_Fileversion
 
             player.ReadFromFile(player);
             tbFirstName.Focus();
+            original = btnOK.Margin;
             }
 
         private void FadeInImage(double maxOpacity)
@@ -100,6 +103,9 @@ namespace HHG_WPF_Fileversion
 
                 FadeInImage(0.25);
                 ZoomIn();
+
+                btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height - 100), 0, 0);
+
                 }
             else
             if (player.Age == player.dontPanic)
@@ -110,11 +116,14 @@ namespace HHG_WPF_Fileversion
                 tbQuote.Text = "";
 
                 FadeInImage(1.0);
+                ZoomIn();
                 StartImageSpin();
+                btnOK.Margin = original;
                 }
             else
                 {
                 image.Visibility = Visibility.Hidden;
+                btnOK.Margin = original;
                 }
             }
 
@@ -129,7 +138,7 @@ namespace HHG_WPF_Fileversion
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
             {
             //randomize position
-            btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
+            //btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
 
             //attach button to mouse
             //Point position = Mouse.GetPosition(this);
