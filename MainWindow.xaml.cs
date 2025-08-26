@@ -19,8 +19,8 @@ namespace HHG_WPF_Fileversion
         private TransformGroup transformGroup = new TransformGroup();
 
         private Random random = new Random();
-        private int width;
-        private int height;
+        private double width;
+        private double height;
 
         private Thickness original;
 
@@ -104,8 +104,8 @@ namespace HHG_WPF_Fileversion
                 FadeInImage(0.25);
                 ZoomIn();
 
-                btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height - 100), 0, 0);
-
+                //randomize button placement
+                btnOK.Margin = new Thickness(random.Next((int)width - 100), random.Next((int)height - 100), 0, 0);
                 }
             else
             if (player.Age == player.dontPanic)
@@ -118,6 +118,7 @@ namespace HHG_WPF_Fileversion
                 FadeInImage(1.0);
                 ZoomIn();
                 StartImageSpin();
+
                 btnOK.Margin = original;
                 }
             else
@@ -131,8 +132,8 @@ namespace HHG_WPF_Fileversion
             {
             InitImageControl();
 
-            width = (int)this.Width;
-            height = (int)this.Height;
+            width = this.Width;
+            height = this.Height;
             }
 
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
