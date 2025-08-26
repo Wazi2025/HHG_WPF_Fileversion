@@ -88,7 +88,7 @@ namespace HHG_WPF_Fileversion
         private void btnOK_Click(object sender, RoutedEventArgs e)
             {
             bool missingInfo = false;
-            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.";
+            const string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
             const string author = "\n - Prostetnic Vogon Jeltz -";
 
             image.Visibility = Visibility.Hidden;
@@ -105,7 +105,7 @@ namespace HHG_WPF_Fileversion
 
                 image.Visibility = Visibility.Visible;
 
-                image.Source = player.ShowImage(player, missingInfo);
+                image.Source = player.ShowImage(missingInfo);
 
                 FadeInImage(0.25);
                 ZoomIn();
@@ -117,7 +117,7 @@ namespace HHG_WPF_Fileversion
             if (player.Age == player.dontPanic)
                 {
                 image.Visibility = Visibility.Visible;
-                image.Source = player.ShowImage(player, missingInfo);
+                image.Source = player.ShowImage(missingInfo);
                 tbQuote.Text = "";
 
                 FadeInImage(1.0);

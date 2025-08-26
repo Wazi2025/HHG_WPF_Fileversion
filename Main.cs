@@ -10,8 +10,8 @@ namespace HHG_WPF_Fileversion
     public class Player
         {
         //Since we aren't using any custom logic in get/set we'll use C#'s auto-implementation
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
         public int Age { get; set; }
 
         //Use readonly instead of const so we can use player.dontPanic instead of Player.dontPanic
@@ -19,9 +19,9 @@ namespace HHG_WPF_Fileversion
         public readonly int dontPanic = 42;
 
         //string list to store quotes from file
-        public List<string> greetingList;
+        private List<string> greetingList;
 
-        BitmapImage bitmapImage;
+        private BitmapImage bitmapImage;
 
         public void ReadFromFile(Player player)
             {
@@ -43,7 +43,7 @@ namespace HHG_WPF_Fileversion
                 }
             }// end of ReadFromFile method
 
-        public BitmapImage ShowImage(Player player, bool missingInfo)
+        public BitmapImage ShowImage(bool missingInfo)
             {
             string fileDir = "Data";
             string fileName = "hhg2.png";
@@ -87,21 +87,14 @@ namespace HHG_WPF_Fileversion
 
             tbQuote.Inlines.Add(new Run($"{player.FirstName} {player.LastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
 
-            tbQuote.Inlines.Add(new Run("Your quote is:\n"));
+            tbQuote.Inlines.Add(new Run("Your quote is:\n\n"));
             tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
             tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
-
-
-            //string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
-            //string temp2 = $"Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items";
-            //return temp + temp2;
 
             if (String.IsNullOrWhiteSpace(player.FirstName) || String.IsNullOrWhiteSpace(player.LastName) || player.Age == 0)
                 return false;
             else
                 return true;
-
-
             }//end of ReadInput
         }//end of class Player
 
