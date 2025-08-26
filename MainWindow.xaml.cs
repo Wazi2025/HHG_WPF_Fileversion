@@ -44,36 +44,37 @@ namespace HHG_WPF_Fileversion
         private void FadeInImage(double maxOpacity)
             {
             DoubleAnimation fadeIn = new DoubleAnimation(0, maxOpacity, TimeSpan.FromSeconds(5));
+
+            fadeIn.AutoReverse = true;
+            fadeIn.RepeatBehavior = RepeatBehavior.Forever;
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
             }
 
         private void ZoomIn()
             {
-            DoubleAnimation zoomIn = new DoubleAnimation
-                {
-                From = 1.0,
-                To = 1.5,
-                Duration = TimeSpan.FromSeconds(2),
-                AutoReverse = true,
-                RepeatBehavior = RepeatBehavior.Forever
-                };
+            DoubleAnimation zoomIn = new DoubleAnimation();
 
+            zoomIn.From = 1.0;
+            zoomIn.To = 1.5;
+            zoomIn.Duration = TimeSpan.FromSeconds(2);
+            zoomIn.AutoReverse = true;
+            zoomIn.RepeatBehavior = RepeatBehavior.Forever;
+
+            //apply the animation to zoomTransform
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
             }
 
         private void StartImageSpin()
             {
-            // Create the animation
-            DoubleAnimation rotateAnimation = new DoubleAnimation
-                {
-                From = 0,
-                To = 360,
-                Duration = TimeSpan.FromSeconds(10),
-                RepeatBehavior = RepeatBehavior.Forever
-                };
+            DoubleAnimation rotateAnimation = new DoubleAnimation();
 
-            // Apply the animation to the RotateTransform
+            rotateAnimation.From = 0;
+            rotateAnimation.To = 360;
+            rotateAnimation.Duration = TimeSpan.FromSeconds(10);
+            rotateAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+            //apply the animation to rotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
             }
 
