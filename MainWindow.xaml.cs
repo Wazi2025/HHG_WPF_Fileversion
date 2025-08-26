@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -24,6 +25,8 @@ namespace HHG_WPF_Fileversion
 
         private Thickness original;
 
+
+
         public MainWindow()
             {
             InitializeComponent();
@@ -35,6 +38,7 @@ namespace HHG_WPF_Fileversion
             player.ReadFromFile(player);
             tbFirstName.Focus();
             original = btnOK.Margin;
+            tbQuote.TextWrapping = TextWrapping.Wrap;
             }
 
         private void FadeInImage(double maxOpacity)
@@ -84,19 +88,21 @@ namespace HHG_WPF_Fileversion
         private void btnOK_Click(object sender, RoutedEventArgs e)
             {
             bool missingInfo = false;
-            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.\n\n - Prostetnic Vogon Jeltz -";
+            const string warning = "Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.";
+            const string author = "\n - Prostetnic Vogon Jeltz -";
 
             image.Visibility = Visibility.Hidden;
             player.ClearPlayerData(player);
 
-            tbQuote.Text = player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
-
-            //check for textbox values
-            if (String.IsNullOrWhiteSpace(tbFirstName.Text) || String.IsNullOrWhiteSpace(tbLastName.Text) || String.IsNullOrWhiteSpace(tbAge.Text))
+            //check for empty  values
+            if (!player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote))
                 {
                 missingInfo = true;
+                tbQuote.Text = "";
 
-                tbQuote.Text = warning;
+                tbQuote.Inlines.Add(new Run(warning) { FontStyle = FontStyles.Italic });
+                tbQuote.Inlines.Add(new Run(author) { FontWeight = FontWeights.Bold });
+
                 image.Visibility = Visibility.Visible;
 
                 image.Source = player.ShowImage(player, missingInfo);
@@ -111,7 +117,6 @@ namespace HHG_WPF_Fileversion
             if (player.Age == player.dontPanic)
                 {
                 image.Visibility = Visibility.Visible;
-
                 image.Source = player.ShowImage(player, missingInfo);
                 tbQuote.Text = "";
 
@@ -123,6 +128,8 @@ namespace HHG_WPF_Fileversion
                 }
             else
                 {
+                tbQuote.Text = "";
+                player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote);
                 image.Visibility = Visibility.Hidden;
                 btnOK.Margin = original;
                 }

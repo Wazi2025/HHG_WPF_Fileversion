@@ -1,14 +1,17 @@
 ﻿using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 
 namespace HHG_WPF_Fileversion
-{
-    public class Player
     {
+    public class Player
+        {
         //Since we aren't using any custom logic in get/set we'll use C#'s auto-implementation
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public int Age { get; set; }
 
         //Use readonly instead of const so we can use player.dontPanic instead of Player.dontPanic
@@ -21,7 +24,7 @@ namespace HHG_WPF_Fileversion
         BitmapImage bitmapImage;
 
         public void ReadFromFile(Player player)
-        {
+            {
             //Instantiate list
             greetingList = new List<string>();
 
@@ -35,13 +38,13 @@ namespace HHG_WPF_Fileversion
 
             //Add each line to the greetinglist as long as streamReader hasn't reached the end of the stream i.e. the file
             while (!streamReader.EndOfStream)
-            {
+                {
                 player.greetingList.Add(streamReader.ReadLine());
-            }
-        }// end of ReadFromFile method
+                }
+            }// end of ReadFromFile method
 
         public BitmapImage ShowImage(Player player, bool missingInfo)
-        {
+            {
             string fileDir = "Data";
             string fileName = "hhg2.png";
 
@@ -57,17 +60,17 @@ namespace HHG_WPF_Fileversion
             bitmapImage = new BitmapImage(new Uri(filePath));
 
             return bitmapImage;
-        }
+            }
 
         public void ClearPlayerData(Player player)
-        {
+            {
             player.FirstName = "";
             player.LastName = "";
             player.Age = 0;
-        }
+            }
 
-        public string ReadInput(string firstName, string lastName, string age, Player player)
-        {
+        public bool ReadInput(string firstName, string lastName, string age, Player player, TextBlock tbQuote)
+            {
             //ask the user for their firstname, lastname and age and add these values to their respective player properties
             player.FirstName = firstName;
             player.LastName = lastName;
@@ -82,11 +85,24 @@ namespace HHG_WPF_Fileversion
             const string dateMessage = "The date is:";
             const string timeMessage = "The time is:";
 
-            string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
-            string temp2 = $"Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items";
-            return temp + temp2;
+            tbQuote.Inlines.Add(new Run($"{player.FirstName} {player.LastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
 
-        }//end of ReadInput
-    }//end of class Player
+            tbQuote.Inlines.Add(new Run("Your quote is:\n"));
+            tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
+            tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
 
-}
+
+            //string temp = $"'Hello, {player.FirstName} {player.LastName} ({player.Age} years). Your quote is:'\n {player.greetingList[date.Second]}\n\n{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n";
+            //string temp2 = $"Quote used is located at position {player.greetingList.IndexOf(player.greetingList[date.Second])} in a list of {player.greetingList.Count} items";
+            //return temp + temp2;
+
+            if (String.IsNullOrWhiteSpace(player.FirstName) || String.IsNullOrWhiteSpace(player.LastName) || player.Age == 0)
+                return false;
+            else
+                return true;
+
+
+            }//end of ReadInput
+        }//end of class Player
+
+    }
