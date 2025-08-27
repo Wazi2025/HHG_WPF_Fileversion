@@ -36,20 +36,18 @@ namespace HHG_WPF_Fileversion
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
             player = new Player();
 
+            //fetch contents of quotes file
             player.ReadFromFile(player);
 
             this.SizeToContent = SizeToContent.WidthAndHeight;
 
-            //set window's background image
+            //create new brush and set window's background image
             ImageBrush brush = new ImageBrush();
             brush.Opacity = 0.25;
             brush.ImageSource = player.ShowImage();
-
             this.Background = brush;
 
-
-            //Init controls
-
+            //Init misc controls
             tbFirstName.Focus();
             original = btnOK.Margin;
             tbQuote.TextWrapping = TextWrapping.Wrap;

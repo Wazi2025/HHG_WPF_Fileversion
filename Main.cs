@@ -23,17 +23,17 @@ namespace HHG_WPF_Fileversion
 
         private BitmapImage bitmapImage;
 
-        private readonly string fileDir = "Data";
-        private string fileName = "Andromeda-Galaxy-Milky-Way.jpg";
-        private string filePath;
-        private string projectRoot;
+        private string FileDir { get; set; }
+        private string FileName { get; set; }
+        private string FilePath { get; set; }
+        private string ProjectRoot { get; set; }
 
         //Player constructor
         public Player()
             {
-            projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-            //filePath = Path.Combine(projectRoot, fileDir, fileName);
-
+            ProjectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            FileName = "Andromeda-Galaxy-Milky-Way.jpg";
+            FileDir = "Data";
             }
 
         public void ReadFromFile(Player player)
@@ -41,13 +41,12 @@ namespace HHG_WPF_Fileversion
             //Instantiate list
             greetingList = new List<string>();
 
-            //string fileDir = "Data";
-            fileName = "quotes.txt";
-            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-            filePath = Path.Combine(projectRoot, fileDir, fileName);
+            FileName = "quotes.txt";
+
+            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
 
             //Open a streamReader
-            using StreamReader streamReader = new StreamReader(filePath);
+            using StreamReader streamReader = new StreamReader(FilePath);
 
             //Add each line to the greetinglist as long as streamReader hasn't reached the end of the stream i.e. the file
             while (!streamReader.EndOfStream)
@@ -58,32 +57,25 @@ namespace HHG_WPF_Fileversion
 
         public BitmapImage ShowImage()
             {
-            //string fileDir = "Data";
-            fileName = "Andromeda-Galaxy-Milky-Way.jpg";
+            FileName = "Andromeda-Galaxy-Milky-Way.jpg";
 
-            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-            filePath = Path.Combine(projectRoot, fileDir, fileName);
+            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
 
-            bitmapImage = new BitmapImage(new Uri(filePath));
+            bitmapImage = new BitmapImage(new Uri(FilePath));
 
             return bitmapImage;
             }
 
         public BitmapImage ShowImage(bool missingInfo)
             {
-            //string fileDir = "Data";
-            //string fileName = "hhg2.png";
-
-            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-
             if (missingInfo)
-                fileName = "hhg2.png";
+                FileName = "hhg2.png";
             else
-                fileName = "dontPanic.jpg";
+                FileName = "dontPanic.jpg";
 
-            filePath = Path.Combine(projectRoot, fileDir, fileName);
+            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
 
-            bitmapImage = new BitmapImage(new Uri(filePath));
+            bitmapImage = new BitmapImage(new Uri(FilePath));
 
             return bitmapImage;
             }
