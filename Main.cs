@@ -43,6 +43,20 @@ namespace HHG_WPF_Fileversion
                 }
             }// end of ReadFromFile method
 
+        public BitmapImage ShowImage()
+            {
+            string fileDir = "Data";
+            string fileName = "Andromeda-Galaxy-Milky-Way.jpg";
+
+            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+
+            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+            bitmapImage = new BitmapImage(new Uri(filePath));
+
+            return bitmapImage;
+            }
+
         public BitmapImage ShowImage(bool missingInfo)
             {
             string fileDir = "Data";

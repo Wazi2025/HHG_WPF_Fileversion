@@ -33,14 +33,23 @@ namespace HHG_WPF_Fileversion
             {
             InitializeComponent();
 
-            this.SizeToContent = SizeToContent.WidthAndHeight;
-
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
             player = new Player();
 
             player.ReadFromFile(player);
 
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+
+            //set window's background image
+            ImageBrush brush = new ImageBrush();
+            brush.Opacity = 0.25;
+            brush.ImageSource = player.ShowImage();
+
+            this.Background = brush;
+
+
             //Init controls
+
             tbFirstName.Focus();
             original = btnOK.Margin;
             tbQuote.TextWrapping = TextWrapping.Wrap;
