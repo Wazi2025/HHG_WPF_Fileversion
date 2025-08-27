@@ -34,6 +34,10 @@ namespace HHG_WPF_Fileversion
             ProjectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
             FileName = "Andromeda-Galaxy-Milky-Way.jpg";
             FileDir = "Data";
+            FilePath = "";
+            FirstName = "";
+            LastName = "";
+
             }
 
         public void ReadFromFile(Player player)
