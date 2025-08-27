@@ -36,7 +36,7 @@ namespace HHG_WPF_Fileversion
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
             player = new Player();
 
-            //fetch contents of quotes file
+            //fetch contents in quotes file
             player.ReadFromFile(player);
 
             this.SizeToContent = SizeToContent.WidthAndHeight;
