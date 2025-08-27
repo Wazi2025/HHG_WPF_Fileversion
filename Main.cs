@@ -23,15 +23,28 @@ namespace HHG_WPF_Fileversion
 
         private BitmapImage bitmapImage;
 
+        private readonly string fileDir = "Data";
+        private string fileName = "Andromeda-Galaxy-Milky-Way.jpg";
+        private string filePath;
+        private string projectRoot;
+
+        //Player constructor
+        public Player()
+            {
+            projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            //filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+            }
+
         public void ReadFromFile(Player player)
             {
             //Instantiate list
             greetingList = new List<string>();
 
-            string fileDir = "Data";
-            string fileName = "quotes.txt";
-            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+            //string fileDir = "Data";
+            fileName = "quotes.txt";
+            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
             //Open a streamReader
             using StreamReader streamReader = new StreamReader(filePath);
@@ -45,12 +58,11 @@ namespace HHG_WPF_Fileversion
 
         public BitmapImage ShowImage()
             {
-            string fileDir = "Data";
-            string fileName = "Andromeda-Galaxy-Milky-Way.jpg";
+            //string fileDir = "Data";
+            fileName = "Andromeda-Galaxy-Milky-Way.jpg";
 
-            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-
-            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
             bitmapImage = new BitmapImage(new Uri(filePath));
 
@@ -59,17 +71,17 @@ namespace HHG_WPF_Fileversion
 
         public BitmapImage ShowImage(bool missingInfo)
             {
-            string fileDir = "Data";
-            string fileName = "hhg2.png";
+            //string fileDir = "Data";
+            //string fileName = "hhg2.png";
 
-            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+            //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
 
             if (missingInfo)
                 fileName = "hhg2.png";
             else
                 fileName = "dontPanic.jpg";
 
-            string filePath = Path.Combine(projectRoot, fileDir, fileName);
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
             bitmapImage = new BitmapImage(new Uri(filePath));
 
