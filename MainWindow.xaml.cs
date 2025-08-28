@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -72,25 +73,39 @@ namespace HHG_WPF_Fileversion
         private void ZoomIn()
             {
             //the spinning animation will activate even though it's never called
-            //has to to with the use of TransFormGroup
+            //when the spin animation starts it effectively carries over due to the use of TransFormGroup
+            //the solution is to set it to null (remove it)
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, null);
 
             DoubleAnimation zoomIn = new DoubleAnimation();
 
-            zoomIn.From = 0.1;
+            zoomIn.From = 0.0;
             zoomIn.To = 3.5;
             zoomIn.Duration = TimeSpan.FromSeconds(2);
             zoomIn.AutoReverse = true;
             zoomIn.RepeatBehavior = RepeatBehavior.Forever;
 
-            //apply the animation to zoomTransform
+            //only bounce if not 42
+            if (player.Age != player.dontPanic)
+                {
+                zoomIn.EasingFunction = new BounceEase
+                    {
+                    Bounces = 1,
+                    Bounciness = 4,
+                    EasingMode = EasingMode.EaseOut
+                    };
+                }
+
+            //apply the animation (the zoom) to zoomTransform
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
+
+            //test
+            Debug.WriteLine($"Zooming in. Age: {player.Age}, Easing: {(player.Age != player.dontPanic ? "Bounce" : "Linear")}");
             }
 
         private void StartImageSpin()
             {
-
             DoubleAnimation rotateAnimation = new DoubleAnimation();
 
             rotateAnimation.From = 0;
@@ -104,7 +119,7 @@ namespace HHG_WPF_Fileversion
 
         private void InitImageControl()
             {
-            //only one Animation can be active so we have to add both animations to a TransformGroup
+            //only one animation can be active so we have to add both animations to a TransformGroup
             //and then add the TransformGroup to the image RenderTransform
             image.RenderTransformOrigin = new Point(0.5, 0.5);
             transformGroup.Children.Add(zoomTransform);
@@ -134,7 +149,7 @@ namespace HHG_WPF_Fileversion
                 image.Visibility = Visibility.Visible;
                 image.Source = player.ShowImage(missingInfo);
 
-                FadeInImage(0.25);
+                FadeInImage(0.50);
                 ZoomIn();
 
                 //randomize button placement
