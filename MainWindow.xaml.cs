@@ -17,18 +17,17 @@ namespace HHG_WPF_Fileversion
         //adding player field so we can instantiate player object in MainWindow's constructor
         private Player player;
 
-        //only one Animation can be active so we have to add both animations to a TransformGroup
-        //and then add the TransformGroup to the image RenderTransform in the InitImageControls method
+        //declare and initialize animation stuff
         private ScaleTransform zoomTransform = new ScaleTransform(1, 1);
         private RotateTransform rotateTransform = new RotateTransform(0);
         private TransformGroup transformGroup = new TransformGroup();
 
+        //declare and initialize a Random object
         private Random random = new Random();
-        private double width;
-        private double height;
 
         private Thickness original;
 
+        //MainWindow's constructor
         public MainWindow()
             {
             InitializeComponent();
@@ -39,6 +38,7 @@ namespace HHG_WPF_Fileversion
             //fetch contents in quotes file
             player.ReadFromFile(player);
 
+            //set window to autosize based on its content (controls like buttons, textboxes etc...)
             this.SizeToContent = SizeToContent.WidthAndHeight;
 
             //create new brush and set window's background image
@@ -47,9 +47,16 @@ namespace HHG_WPF_Fileversion
             brush.ImageSource = player.ShowImage();
             this.Background = brush;
 
-            //Init misc controls
+            //init animation stuff
+            InitImageControl();
+
+            //set focus to firstName textbox
             tbFirstName.Focus();
+
+            //keep track of original btnOK's margin (position)
             original = btnOK.Margin;
+
+            //set textwrap on
             tbQuote.TextWrapping = TextWrapping.Wrap;
             }
 
@@ -64,10 +71,14 @@ namespace HHG_WPF_Fileversion
 
         private void ZoomIn()
             {
+            //the spinning animation will activate even though it's never called
+            //has to to with the use of TransFormGroup
+            rotateTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+
             DoubleAnimation zoomIn = new DoubleAnimation();
 
-            zoomIn.From = 1.0;
-            zoomIn.To = 1.5;
+            zoomIn.From = 0.1;
+            zoomIn.To = 3.5;
             zoomIn.Duration = TimeSpan.FromSeconds(2);
             zoomIn.AutoReverse = true;
             zoomIn.RepeatBehavior = RepeatBehavior.Forever;
@@ -79,6 +90,7 @@ namespace HHG_WPF_Fileversion
 
         private void StartImageSpin()
             {
+
             DoubleAnimation rotateAnimation = new DoubleAnimation();
 
             rotateAnimation.From = 0;
@@ -92,6 +104,8 @@ namespace HHG_WPF_Fileversion
 
         private void InitImageControl()
             {
+            //only one Animation can be active so we have to add both animations to a TransformGroup
+            //and then add the TransformGroup to the image RenderTransform
             image.RenderTransformOrigin = new Point(0.5, 0.5);
             transformGroup.Children.Add(zoomTransform);
             transformGroup.Children.Add(rotateTransform);
@@ -108,7 +122,7 @@ namespace HHG_WPF_Fileversion
 
             player.ClearPlayerData(player);
 
-            //check for empty  values
+            //check for empty values
             if (!player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote))
                 {
                 missingInfo = true;
@@ -124,7 +138,7 @@ namespace HHG_WPF_Fileversion
                 ZoomIn();
 
                 //randomize button placement
-                btnOK.Margin = new Thickness(random.Next((int)width - 100), random.Next((int)height - 100), 0, 0);
+                btnOK.Margin = new Thickness(random.Next((int)this.Width - 100), random.Next((int)this.Height - 100), 0, 0);
                 }
             else
             if (player.Age == player.dontPanic)
@@ -138,7 +152,7 @@ namespace HHG_WPF_Fileversion
                 ZoomIn();
                 StartImageSpin();
 
-                //restore button original position
+                //restore button's original position
                 btnOK.Margin = original;
                 }
             else
@@ -153,14 +167,10 @@ namespace HHG_WPF_Fileversion
                 }
             }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-            {
-            InitImageControl();
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //    {
 
-            //get window height/width
-            width = this.Width;
-            height = this.Height;
-            }
+        //    }
 
         public void ThreeDTest()
             {

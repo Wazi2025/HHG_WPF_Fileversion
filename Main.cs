@@ -9,50 +9,54 @@ namespace HHG_WPF_Fileversion
     {
     public class Player
         {
-        //Since we aren't using any custom logic in get/set we'll use C#'s auto-implementation
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
+        //first/lastName can be private since they won't be accessed outside Player class
+        private string firstName = "";
+        private string lastName = "";
+
+        //We only need get/set when property is to be accessed/modified outside it's class, i.e. it's public 
         public int Age { get; set; }
 
         //Use readonly instead of const so we can use player.dontPanic instead of Player.dontPanic
         //const is implicitly static, hence the need for type (Player) instead of instance (player)
-        public readonly int dontPanic = 42;
+        //
+        //update: by using only get it's effectively read-only
+        public int dontPanic { get; } = 42;
 
-        //string list to store quotes from file
-        private List<string> greetingList;
+        //declare and initialize string list to store quotes from file
+        private List<string> greetingList = new List<string>();
 
-        private BitmapImage bitmapImage;
+        //declare and initialize a BitmapImage for use with...well, bitmaps AKA images
+        private BitmapImage bitmapImage = new BitmapImage();
 
-        private string FileDir { get; set; }
-        private string FileName { get; set; }
-        private string FilePath { get; set; }
-        private string ProjectRoot { get; set; }
+        private readonly string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        private readonly string fileDir = "Data";
+        private string fileName = "";
+        private string filePath = "";
 
         //Player constructor
-        public Player()
-            {
-            ProjectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-            FileName = "Andromeda-Galaxy-Milky-Way.jpg";
-            FileDir = "Data";
-            FilePath = "";
-            FirstName = "";
-            LastName = "";
-
-            }
+        //public Player()
+        //    {
+        //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        //fileName = "Andromeda-Galaxy-Milky-Way.jpg";
+        //fileDir = "Data";
+        //filePath = "";
+        //firstName = "";
+        //lastName = "";
+        //}
 
         public void ReadFromFile(Player player)
             {
             //Instantiate list
-            greetingList = new List<string>();
+            //greetingList = new List<string>();
 
-            FileName = "quotes.txt";
+            fileName = "quotes.txt";
 
-            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
             //Open a streamReader
-            using StreamReader streamReader = new StreamReader(FilePath);
+            using StreamReader streamReader = new StreamReader(filePath);
 
-            //Add each line to the greetinglist as long as streamReader hasn't reached the end of the stream i.e. the file
+            //Add each line to the greetingList as long as streamReader hasn't reached the end of the stream i.e. the file
             while (!streamReader.EndOfStream)
                 {
                 player.greetingList.Add(streamReader.ReadLine());
@@ -61,11 +65,11 @@ namespace HHG_WPF_Fileversion
 
         public BitmapImage ShowImage()
             {
-            FileName = "Andromeda-Galaxy-Milky-Way.jpg";
+            fileName = "Andromeda-Galaxy-Milky-Way.jpg";
 
-            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
-            bitmapImage = new BitmapImage(new Uri(FilePath));
+            bitmapImage = new BitmapImage(new Uri(filePath));
 
             return bitmapImage;
             }
@@ -73,51 +77,50 @@ namespace HHG_WPF_Fileversion
         public BitmapImage ShowImage(bool missingInfo)
             {
             if (missingInfo)
-                FileName = "hhg2.png";
+                fileName = "hhg2.png";
             else
-                FileName = "dontPanic.jpg";
+                fileName = "dontPanic.jpg";
 
-            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
 
-            bitmapImage = new BitmapImage(new Uri(FilePath));
+            bitmapImage = new BitmapImage(new Uri(filePath));
 
             return bitmapImage;
             }
 
         public void ClearPlayerData(Player player)
             {
-            player.FirstName = "";
-            player.LastName = "";
+            player.firstName = "";
+            player.lastName = "";
             player.Age = 0;
             }
 
         public bool ReadInput(string firstName, string lastName, string age, Player player, TextBlock tbQuote)
             {
-            //ask the user for their firstname, lastname and age and add these values to their respective player properties
-            player.FirstName = firstName;
-            player.LastName = lastName;
+            //ask the user for their firstName, lastName and age and add these values to their respective player properties
+            player.firstName = firstName;
+            player.lastName = lastName;
 
             if (int.TryParse(age, out int result))
                 player.Age = result;
 
-            //Show output
             DateTime date = DateTime.Now;
             const string dateFormat = "dd MMMM, yyyy";
             const string timeFormat = "HH:mm:ss";
             const string dateMessage = "The date is:";
             const string timeMessage = "The time is:";
 
-            tbQuote.Inlines.Add(new Run($"{player.FirstName} {player.LastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
+            //add quote and set text style 
+            tbQuote.Inlines.Add(new Run($"{player.firstName} {player.lastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
 
             tbQuote.Inlines.Add(new Run("Your quote is:\n\n"));
             tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
             tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
 
-            if (String.IsNullOrWhiteSpace(player.FirstName) || String.IsNullOrWhiteSpace(player.LastName) || player.Age == 0)
+            if (String.IsNullOrWhiteSpace(player.firstName) || String.IsNullOrWhiteSpace(player.lastName) || player.Age == 0)
                 return false;
             else
                 return true;
             }//end of ReadInput
         }//end of class Player
-
     }
