@@ -7,6 +7,7 @@ A WPF (Windows Presentation Foundation) version of "HHG_timebased_welcome_quotes
 ## Includes
 
 - Animation
+- Music
 - A pretty obvious easter egg 😁
 - A special message from Prostetnic Vogon Jeltz
 - No bypasses

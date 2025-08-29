@@ -131,7 +131,7 @@ namespace HHG_WPF_Fileversion
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
             }
 
-        private void ZoomIn()
+        private void ZoomIn(bool missingInfo)
             {
             //the spinning animation will activate even though it's never called
             //when the spin animation starts it effectively carries over due to the use of TransFormGroup
@@ -147,7 +147,7 @@ namespace HHG_WPF_Fileversion
             zoomIn.RepeatBehavior = RepeatBehavior.Forever;
 
             //only bounce if not 42
-            if (player.Age != player.DontPanic)
+            if (missingInfo && player.Age == player.DontPanic)
                 {
                 zoomIn.EasingFunction = new BounceEase
                     {
@@ -211,7 +211,7 @@ namespace HHG_WPF_Fileversion
                 image.Source = player.ShowImage(missingInfo);
 
                 FadeInImage(0.50);
-                ZoomIn();
+                ZoomIn(missingInfo);
 
                 //randomize button placement
                 btnOK.Margin = new Thickness(random.Next((int)this.Width - 100), random.Next((int)this.Height - 100), 0, 0);
@@ -231,7 +231,7 @@ namespace HHG_WPF_Fileversion
                 image.Source = player.ShowImage(missingInfo);
 
                 FadeInImage(1.0);
-                ZoomIn();
+                ZoomIn(missingInfo);
                 StartImageSpin();
 
                 //restore button's original position
