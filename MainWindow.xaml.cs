@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace HHG_WPF_Fileversion
     {
@@ -59,6 +62,64 @@ namespace HHG_WPF_Fileversion
 
             //set textwrap on
             tbQuote.TextWrapping = TextWrapping.Wrap;
+
+            //sound test using MediaPlayer            
+            //player.Song.Open(new Uri(player.GetSong()));
+            //player.Song.Play();
+
+            //play music
+            FadeInMusic();
+            }
+
+        private void FadeInMusic()
+            {
+            player.audioFileReader = new AudioFileReader(player.GetSong());
+            player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
+            player.volumeProvider.Volume = 0f; // start silent
+
+            player.outputDevice = new WaveOutEvent(); // or use WaveOut for more control
+            player.outputDevice.Init(player.volumeProvider);
+            player.outputDevice.Play();
+
+            FadeInVolume(player.volumeProvider, durationSeconds: 3);
+            }
+
+        private void FadeInVolume(VolumeSampleProvider volumeProvider, double durationSeconds = 2.0)
+            {
+            var timer = new DispatcherTimer
+                {
+                Interval = TimeSpan.FromMilliseconds(50)
+                };
+
+            int totalSteps = (int)(durationSeconds * 1000 / timer.Interval.TotalMilliseconds);
+            int currentStep = 0;
+
+            timer.Tick += (s, e) =>
+            {
+                currentStep++;
+                float volume = (float)currentStep / totalSteps;
+                volumeProvider.Volume = Math.Min(volume, 1f);
+
+                if (currentStep >= totalSteps)
+                    {
+                    timer.Stop();
+                    }
+            };
+
+            timer.Start();
+            }
+
+        private void FadeOutMusic()
+            {
+            player.audioFileReader = new AudioFileReader(player.GetSong());
+            player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
+            player.volumeProvider.Volume = 1.0f; // start at max volume
+
+            player.outputDevice = new WaveOutEvent();
+            player.outputDevice.Init(player.volumeProvider);
+            player.outputDevice.Play();
+
+            FadeInVolume(player.volumeProvider, durationSeconds: 3);
             }
 
         private void FadeInImage(double maxOpacity)
@@ -86,7 +147,7 @@ namespace HHG_WPF_Fileversion
             zoomIn.RepeatBehavior = RepeatBehavior.Forever;
 
             //only bounce if not 42
-            if (player.Age != player.dontPanic)
+            if (player.Age != player.DontPanic)
                 {
                 zoomIn.EasingFunction = new BounceEase
                     {
@@ -101,7 +162,7 @@ namespace HHG_WPF_Fileversion
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
 
             //test
-            Debug.WriteLine($"Zooming in. Age: {player.Age}, Easing: {(player.Age != player.dontPanic ? "Bounce" : "Linear")}");
+            Debug.WriteLine($"Zooming in. Age: {player.Age}, Easing: {(player.Age != player.DontPanic ? "Bounce" : "Linear")}");
             }
 
         private void StartImageSpin()
@@ -156,8 +217,14 @@ namespace HHG_WPF_Fileversion
                 btnOK.Margin = new Thickness(random.Next((int)this.Width - 100), random.Next((int)this.Height - 100), 0, 0);
                 }
             else
-            if (player.Age == player.dontPanic)
+            if (player.Age == player.DontPanic)
                 {
+                //set song position to it's most HHG's "moment"                
+                player.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
+
+                //player.Song.Position = new TimeSpan(0, 1, 10);
+                //FadeInMusic();
+
                 tbQuote.Text = "";
 
                 image.Visibility = Visibility.Visible;
@@ -319,6 +386,20 @@ namespace HHG_WPF_Fileversion
         private void btnTest_Click(object sender, RoutedEventArgs e)
             {
             ThreeDTest();
+            }
+
+        private void MainWindow1_Unloaded(object sender, RoutedEventArgs e)
+            {
+            //FadeOutMusic();
+
+            //release and free MediaPlayer resources
+            //player.Song.Stop();
+            //player.Song.Close();
+
+            //release and free Naudio resources
+            player.outputDevice.Stop();
+            player.outputDevice.Dispose();
+            player.audioFileReader.Dispose();
             }
         }
     }

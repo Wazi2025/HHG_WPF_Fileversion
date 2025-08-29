@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -16,11 +18,11 @@ namespace HHG_WPF_Fileversion
         //We only need get/set when property is to be accessed/modified outside it's class, i.e. it's public 
         public int Age { get; set; }
 
-        //Use readonly instead of const so we can use player.dontPanic instead of Player.dontPanic
+        //Use readonly instead of const so we can use player.DontPanic instead of Player.DontPanic
         //const is implicitly static, hence the need for type (Player) instead of instance (player)
         //
         //update: by using only get it's effectively read-only
-        public int dontPanic { get; } = 42;
+        public int DontPanic { get; } = 42;
 
         //declare and initialize string list to store quotes from file
         private List<string> greetingList = new List<string>();
@@ -32,6 +34,14 @@ namespace HHG_WPF_Fileversion
         private readonly string fileDir = "Data";
         private string fileName = "";
         private string filePath = "";
+
+        //public MediaPlayer Song { get; } = new MediaPlayer();
+
+        //we'll use NAudio since MediaPlayer class has limititations
+        public IWavePlayer outputDevice;
+        public AudioFileReader audioFileReader;
+        public VolumeSampleProvider volumeProvider;
+
 
         //Player constructor
         //public Player()
@@ -46,9 +56,6 @@ namespace HHG_WPF_Fileversion
 
         public void ReadFromFile(Player player)
             {
-            //Instantiate list
-            //greetingList = new List<string>();
-
             fileName = "quotes.txt";
 
             filePath = Path.Combine(projectRoot, fileDir, fileName);
@@ -63,10 +70,17 @@ namespace HHG_WPF_Fileversion
                 }
             }// end of ReadFromFile method
 
+        public string GetSong()
+            {
+            fileName = "Journey of the Sorcerer.mp4";
+            filePath = Path.Combine(projectRoot, fileDir, fileName);
+
+            return filePath;
+            }
+
         public BitmapImage ShowImage()
             {
             fileName = "Andromeda-Galaxy-Milky-Way.jpg";
-
             filePath = Path.Combine(projectRoot, fileDir, fileName);
 
             bitmapImage = new BitmapImage(new Uri(filePath));
@@ -79,7 +93,7 @@ namespace HHG_WPF_Fileversion
             if (missingInfo)
                 fileName = "hhg2.png";
             else
-                fileName = "dontPanic.jpg";
+                fileName = "DontPanic.jpg";
 
             filePath = Path.Combine(projectRoot, fileDir, fileName);
 
