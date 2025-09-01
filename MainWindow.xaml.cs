@@ -1,14 +1,10 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using System.Diagnostics;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace HHG_WPF_Fileversion
@@ -29,7 +25,6 @@ namespace HHG_WPF_Fileversion
         //declare and initialize a Random object
         private Random random = new Random();
 
-        private Thickness original;
 
         //MainWindow's constructor
         public MainWindow()
@@ -43,7 +38,7 @@ namespace HHG_WPF_Fileversion
             player.ReadFromFile(player);
 
             //set window to autosize based on its content (controls like buttons, textboxes etc...)
-            this.SizeToContent = SizeToContent.WidthAndHeight;
+            //this.SizeToContent = SizeToContent.WidthAndHeight;
 
             //create new brush and set window's background image
             ImageBrush brush = new ImageBrush();
@@ -57,9 +52,6 @@ namespace HHG_WPF_Fileversion
             //set focus to firstName textbox
             tbFirstName.Focus();
 
-            //keep track of original btnOK's margin (position)
-            original = btnOK.Margin;
-
             //set textwrap on
             tbQuote.TextWrapping = TextWrapping.Wrap;
 
@@ -69,6 +61,7 @@ namespace HHG_WPF_Fileversion
 
             //play music
             FadeInMusic();
+
             }
 
         private void FadeInMusic()
@@ -161,8 +154,6 @@ namespace HHG_WPF_Fileversion
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
 
-            //test
-            Debug.WriteLine($"Zooming in. Age: {player.Age}, Easing: {(player.Age != player.DontPanic ? "Bounce" : "Linear")}");
             }
 
         private void StartImageSpin()
@@ -191,8 +182,6 @@ namespace HHG_WPF_Fileversion
         private void btnOK_Click(object sender, RoutedEventArgs e)
             {
             bool missingInfo = false;
-            const string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
-            const string author = "\n - Prostetnic Vogon Jeltz -";
 
             image.Visibility = Visibility.Hidden;
 
@@ -204,8 +193,8 @@ namespace HHG_WPF_Fileversion
                 missingInfo = true;
 
                 tbQuote.Text = "";
-                tbQuote.Inlines.Add(new Run(warning) { FontStyle = FontStyles.Italic });
-                tbQuote.Inlines.Add(new Run(author) { FontWeight = FontWeights.Bold });
+                tbQuote.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
+                tbQuote.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
 
                 image.Visibility = Visibility.Visible;
                 image.Source = player.ShowImage(missingInfo);
@@ -213,8 +202,9 @@ namespace HHG_WPF_Fileversion
                 FadeInImage(0.50);
                 ZoomIn(missingInfo);
 
-                //randomize button placement
-                btnOK.Margin = new Thickness(random.Next((int)this.Width - 100), random.Next((int)this.Height - 100), 0, 0);
+                //randomize button placement or technically the Canvas since btnOk is it's only member
+                Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
+                Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
                 }
             else
             if (player.Age == player.DontPanic)
@@ -235,7 +225,7 @@ namespace HHG_WPF_Fileversion
                 StartImageSpin();
 
                 //restore button's original position
-                btnOK.Margin = original;
+                RestoreButtonPosition();
                 }
             else
                 {
@@ -245,8 +235,14 @@ namespace HHG_WPF_Fileversion
 
                 image.Visibility = Visibility.Hidden;
 
-                btnOK.Margin = original;
+                RestoreButtonPosition();
                 }
+            }
+
+        private void RestoreButtonPosition()
+            {
+            Canvas.SetLeft(btnOK, 180);
+            Canvas.SetTop(btnOK, 230);
             }
 
         //private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -254,125 +250,7 @@ namespace HHG_WPF_Fileversion
 
         //    }
 
-        public void ThreeDTest()
-            {
-            //Note: this is straight from ChatGPT, I have very little idea what is actually going on here
 
-            // Set up the viewport
-            var viewport = new Viewport3D();
-
-            // Camera
-            var camera = new PerspectiveCamera
-                {
-                Position = new Point3D(0, 0, 3),
-                LookDirection = new Vector3D(0, 0, -1),
-                UpDirection = new Vector3D(0, 1, 0),
-                FieldOfView = 60
-                };
-            viewport.Camera = camera;
-
-            // Light
-            var light = new DirectionalLight
-                {
-                Color = Colors.White,
-                Direction = new Vector3D(-0.5, -0.5, -1)
-                };
-
-            viewport.Children.Add(new ModelVisual3D { Content = light });
-
-            // 3D Geometry (rectangle made of 2 triangles)
-            var mesh = new MeshGeometry3D
-                {
-                Positions = new Point3DCollection
-                {
-                    new Point3D(-1, -1, 0),
-                    new Point3D(1, -1, 0),
-                    new Point3D(1, 1, 0),
-                    new Point3D(-1, 1, 0)
-                },
-                TriangleIndices = new Int32Collection { 0, 1, 2, 0, 2, 3 },
-                TextureCoordinates = new PointCollection
-                {
-                    new Point(0, 1),
-                    new Point(1, 1),
-                    new Point(1, 0),
-                    new Point(0, 0)
-                }
-                };
-
-            // Image Brush
-            var imageBrush = new ImageBrush();
-
-            string fileDir = "Data";
-            string fileName = "dontPanic.jpg";
-
-            string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-
-            string filePath = Path.Combine(projectRoot, fileDir, fileName);
-
-            imageBrush.ImageSource = new BitmapImage(new Uri(filePath));
-
-
-            // Shadow/depth simulation behind image
-            // 🎨 Front Material (Image)
-            var frontMaterial = new DiffuseMaterial(imageBrush);
-
-            // 🎨 Back Plane (simulated edge color)
-            var backMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.BurlyWood));
-
-            // 🌁 Main image model
-            var frontModel = new GeometryModel3D
-                {
-                Geometry = mesh,
-                Material = frontMaterial,
-                BackMaterial = frontMaterial
-                };
-
-            // 💡 Simulated side color: just a dark rectangle placed slightly behind
-            var shadowModel = new GeometryModel3D
-                {
-                Geometry = mesh,
-                Material = backMaterial,
-                BackMaterial = backMaterial,
-                Transform = new TranslateTransform3D(0, 0, -0.05) // push it slightly back
-                };
-
-            // Combine both into the scene
-            var modelGroup = new Model3DGroup();
-            modelGroup.Children.Add(shadowModel); // behind
-            modelGroup.Children.Add(frontModel);  // in front
-
-            var modelVisual = new ModelVisual3D { Content = modelGroup };
-            viewport.Children.Add(modelVisual);
-
-
-            // rotation setup
-            var rotationAxis = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 0); // rotate 30 degrees on X axis
-            var rotateTransform = new RotateTransform3D(rotationAxis);
-            modelGroup.Transform = rotateTransform;
-
-            //animate rotation
-            var animation = new DoubleAnimation();
-            animation.From = 0;
-            animation.To = 360;
-            animation.Duration = TimeSpan.FromSeconds(5);
-            animation.RepeatBehavior = RepeatBehavior.Forever;
-
-            //animate
-            rotationAxis.BeginAnimation(AxisAngleRotation3D.AngleProperty, animation);
-
-            // Add viewport to new window
-            Window testWindow = new Window();
-            testWindow.Width = 800;
-            testWindow.Height = 600;
-
-            testWindow.Content = viewport;
-
-            //animate
-            rotationAxis.BeginAnimation(AxisAngleRotation3D.AngleProperty, animation);
-
-            testWindow.Show();
-            }
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
             {
             //randomize position
@@ -383,10 +261,10 @@ namespace HHG_WPF_Fileversion
             //btnOK.Margin = new Thickness(position.X, position.Y, 0, 0);
             }
 
-        private void btnTest_Click(object sender, RoutedEventArgs e)
-            {
-            ThreeDTest();
-            }
+        //private void btnTest_Click(object sender, RoutedEventArgs e)
+        //    {
+
+        //    }
 
         private void MainWindow1_Unloaded(object sender, RoutedEventArgs e)
             {
@@ -396,7 +274,7 @@ namespace HHG_WPF_Fileversion
             //player.Song.Stop();
             //player.Song.Close();
 
-            //release and free Naudio resources
+            //release and free NAudio resources
             player.outputDevice.Stop();
             player.outputDevice.Dispose();
             player.audioFileReader.Dispose();

@@ -35,6 +35,9 @@ namespace HHG_WPF_Fileversion
         private string fileName = "";
         private string filePath = "";
 
+        public readonly string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
+        public readonly string author = "\n - Prostetnic Vogon Jeltz -";
+
         //public MediaPlayer Song { get; } = new MediaPlayer();
 
         //we'll use NAudio since MediaPlayer class has limititations
