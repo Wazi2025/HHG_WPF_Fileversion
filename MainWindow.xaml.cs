@@ -25,6 +25,8 @@ namespace HHG_WPF_Fileversion
         //declare and initialize a Random object
         private Random random = new Random();
 
+        private Button button;
+
 
         //MainWindow's constructor
         public MainWindow()
@@ -183,9 +185,12 @@ namespace HHG_WPF_Fileversion
             {
             bool missingInfo = false;
 
+
             image.Visibility = Visibility.Hidden;
 
             player.ClearPlayerData(player);
+
+
 
             //check for empty values
             if (!player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote))
@@ -205,6 +210,24 @@ namespace HHG_WPF_Fileversion
                 //randomize button placement or technically the Canvas since btnOk is it's only member
                 Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
                 Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
+
+
+                //for (int i = 0; i < 10; i++)
+                //    {
+                button = new Button();
+
+                //button.Content = $"Test {i}";
+                button.Content = btnOK.Content;
+                //button.Name = btnOK.Content + i.ToString();
+                button.Name = "Test";
+                //add button to MainGrid
+                MainCanvas.Children.Add(button);
+
+                Canvas.SetLeft(button, random.Next((int)this.Width - 100));
+                Canvas.SetTop(button, random.Next((int)this.Height - 100));
+
+                //  }
+
                 }
             else
             if (player.Age == player.DontPanic)
@@ -226,6 +249,7 @@ namespace HHG_WPF_Fileversion
 
                 //restore button's original position
                 RestoreButtonPosition();
+                RemoveExtraButtons();
                 }
             else
                 {
@@ -236,6 +260,27 @@ namespace HHG_WPF_Fileversion
                 image.Visibility = Visibility.Hidden;
 
                 RestoreButtonPosition();
+                RemoveExtraButtons();
+                }
+            }
+
+        private void RemoveExtraButtons()
+            {
+            // Collect buttons into a temporary list (to avoid modifying the collection during iteration)
+            List<Button> buttonsToRemove = new List<Button>();
+
+            foreach (UIElement element in MainCanvas.Children)
+                {
+                if (element is Button btn && btn.Name != "btnOK")
+                    {
+                    buttonsToRemove.Add(btn);
+                    }
+                }
+
+            // Now remove them
+            foreach (Button btn in buttonsToRemove)
+                {
+                MainCanvas.Children.Remove(btn);
                 }
             }
 
@@ -278,6 +323,7 @@ namespace HHG_WPF_Fileversion
             player.outputDevice.Stop();
             player.outputDevice.Dispose();
             player.audioFileReader.Dispose();
+
             }
         }
     }

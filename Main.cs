@@ -69,7 +69,7 @@ namespace HHG_WPF_Fileversion
             //Add each line to the greetingList as long as streamReader hasn't reached the end of the stream i.e. the file
             while (!streamReader.EndOfStream)
                 {
-                player.greetingList.Add(streamReader.ReadLine());
+                greetingList.Add(streamReader.ReadLine());
                 }
             }// end of ReadFromFile method
 

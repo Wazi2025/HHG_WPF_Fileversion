@@ -27,7 +27,7 @@
         <TextBox x:Name="tbFirstName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
         <TextBox x:Name="tbLastName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
         <TextBox x:Name="tbAge" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <Canvas>
+        <Canvas x:Name="MainCanvas">
             <Button Canvas.Left="180" Canvas.Top="230" x:Name="btnOK" Content="Get Quote" Click="btnOK_Click" IsDefault="True" RenderTransformOrigin="0.625,0.194"/>
         </Canvas>
         <Label Grid.Column="1" Foreground="White" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.469,0.945"/>
