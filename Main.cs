@@ -112,6 +112,13 @@ namespace HHG_WPF_Fileversion
             player.Age = 0;
             }
 
+        public void SetWarning(TextBlock tbQuote, Player player)
+            {
+            tbQuote.Text = "";
+            tbQuote.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
+            tbQuote.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
+            }
+
         public void FetchQuote(TextBlock tbQuote, Player player)
             {
             DateTime date = DateTime.Now;
