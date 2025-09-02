@@ -196,9 +196,53 @@ namespace HHG_WPF_Fileversion
 
             player.ClearPlayerData(player);
 
+            //Read player data
+            player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
 
-            //check for empty values
-            if (!player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote))
+            //fetch quote
+            player.FetchQuote(tbQuote, player);
+
+            //show chaos if any fields are empty (0 is considered empty in this case)
+            if (player.Age == 0 || String.IsNullOrWhiteSpace(player.firstName) || String.IsNullOrWhiteSpace(player.lastName))
+                {
+                tbQuote.Visibility = Visibility.Hidden;
+                RandomizeButton();
+                CreateVogonQuote();
+                }
+            //show quote
+            if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.firstName) && !String.IsNullOrWhiteSpace(player.lastName))
+                {
+                image.Visibility = Visibility.Hidden;
+
+                RestoreButtonPosition();
+
+                RemoveExtraQuotes();
+                }
+            else
+            //Show spinning hhg image, clear quotes, restore button
+            if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.firstName) && !String.IsNullOrWhiteSpace(player.lastName))
+                {
+                //set song position to it's most HHG's "moment"                
+                player.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
+
+                //player.Song.Position = new TimeSpan(0, 1, 10);
+                //FadeInMusic();
+
+                image.Visibility = Visibility.Visible;
+                image.Source = player.ShowImage(missingInfo);
+                tbQuote.Visibility = Visibility.Hidden;
+
+                FadeInImage(1.0);
+                ZoomIn(missingInfo);
+                StartImageSpin();
+
+                RestoreButtonPosition();
+
+                RemoveExtraQuotes();
+                }
+            else
+            //show bouncing logo, clear quotes, restore button
+            if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.firstName) && String.IsNullOrWhiteSpace(player.lastName))
                 {
                 missingInfo = true;
 
@@ -212,83 +256,56 @@ namespace HHG_WPF_Fileversion
                 FadeInImage(0.50);
                 ZoomIn(missingInfo);
 
-                RandomizeButton();
-
-                //CreateButtons();
-
-                CreateVogonQuote();
-                }
-            else
-            if (player.Age == player.DontPanic)
-                {
-                //set song position to it's most HHG's "moment"                
-                player.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
-
-                //player.Song.Position = new TimeSpan(0, 1, 10);
-                //FadeInMusic();
-
-                tbQuote.Text = "";
-
-                image.Visibility = Visibility.Visible;
-                image.Source = player.ShowImage(missingInfo);
-
-                FadeInImage(1.0);
-                ZoomIn(missingInfo);
-                StartImageSpin();
-
-                //restore button's original position
                 RestoreButtonPosition();
 
-                RemoveExtraButtons();
-                RemoveExtraQuote();
-                }
-            else
-                {
-                tbQuote.Text = "";
-
-                player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote);
-
-                image.Visibility = Visibility.Hidden;
-
-                RestoreButtonPosition();
-                RemoveExtraButtons();
-                RemoveExtraQuote();
+                RemoveExtraQuotes();
                 }
             }
 
+
         private void RandomizeButton()
             {
-            //randomize button placement or technically the Canvas since btnOk is it's only member
+            //randomize button placement or technically the Canvas
             Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
             Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
             }
         private void CreateVogonQuote()
             {
-            for (int i = 0; i < 41; i++)
+            //instantiate textblocks
+            for (int i = 0; i <= player.DontPanic; i++)
                 {
                 textBlock = new TextBlock();
+
+                //brush must be something light since the background is pretty dark
                 textBlock.Foreground = Brushes.White;
                 textBlock.Name = "Test";
 
                 //Add Vogon warning to new textblocks. This is a bit cludgy but it'll suffice for now
-                //Can't use textBlock.Text = tbQuote.Text since that is text only
+                //Can't use textBlock.Text = tbQuote.Text since that is pure text only
                 textBlock.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
                 textBlock.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
 
                 //add textBlock to MainCanvas
                 MainCanvas.Children.Add(textBlock);
 
+                //tbFirstName.Text = i.ToString();
+
+                //randomize textblocks
                 Canvas.SetLeft(textBlock, random.Next((int)this.Width - 100));
                 Canvas.SetTop(textBlock, random.Next((int)this.Height - 100));
                 }
+
             }
 
-        private void RemoveExtraQuote()
+        private void RemoveExtraQuotes()
             {
+            // Collect textblocks into a temporary list (to avoid modifying the collection during iteration)
             List<TextBlock> textBlocksToRemove = new List<TextBlock>();
 
+            //iterate through each element in canvas
             foreach (UIElement element in MainCanvas.Children)
                 {
+                //add to list if element is of type textblock AND it's name is anything but the original textblock
                 if (element is TextBlock textBlock && textBlock.Name != tbQuote.Name)
                     {
                     textBlocksToRemove.Add(textBlock);
@@ -304,7 +321,7 @@ namespace HHG_WPF_Fileversion
 
         private void CreateButtons()
             {
-            for (int i = 0; i < 41; i++)
+            for (int i = 0; i < player.DontPanic - 1; i++)
                 {
                 button = new Button();
 
@@ -321,7 +338,6 @@ namespace HHG_WPF_Fileversion
 
         private void RemoveExtraButtons()
             {
-            // Collect buttons into a temporary list (to avoid modifying the collection during iteration)
             List<Button> buttonsToRemove = new List<Button>();
 
             foreach (UIElement element in MainCanvas.Children)
@@ -332,7 +348,6 @@ namespace HHG_WPF_Fileversion
                     }
                 }
 
-            // Now remove them
             foreach (Button btn in buttonsToRemove)
                 {
                 MainCanvas.Children.Remove(btn);
@@ -341,6 +356,7 @@ namespace HHG_WPF_Fileversion
 
         private void RestoreButtonPosition()
             {
+            //restore button's original position (from MainWindow.xaml)
             Canvas.SetLeft(btnOK, 180);
             Canvas.SetTop(btnOK, 230);
             }
@@ -380,8 +396,8 @@ namespace HHG_WPF_Fileversion
             player.audioFileReader.Dispose();
 
             //just in case the user decides to just close the program
-            RemoveExtraButtons();
-            RemoveExtraQuote();
+            //RemoveExtraButtons();
+            RemoveExtraQuotes();
 
             }
         }

@@ -12,8 +12,8 @@ namespace HHG_WPF_Fileversion
     public class Player
         {
         //first/lastName can be private since they won't be accessed outside Player class
-        private string firstName = "";
-        private string lastName = "";
+        public string firstName = "";
+        public string lastName = "";
 
         //We only need get/set when property is to be accessed/modified outside it's class, i.e. it's public 
         public int Age { get; set; }
@@ -112,20 +112,15 @@ namespace HHG_WPF_Fileversion
             player.Age = 0;
             }
 
-        public bool ReadInput(string firstName, string lastName, string age, Player player, TextBlock tbQuote)
+        public void FetchQuote(TextBlock tbQuote, Player player)
             {
-            //ask the user for their firstName, lastName and age and add these values to their respective player properties
-            player.firstName = firstName;
-            player.lastName = lastName;
-
-            if (int.TryParse(age, out int result))
-                player.Age = result;
-
             DateTime date = DateTime.Now;
             const string dateFormat = "dd MMMM, yyyy";
             const string timeFormat = "HH:mm:ss";
             const string dateMessage = "The date is:";
             const string timeMessage = "The time is:";
+
+            tbQuote.Text = "";
 
             //add quote and set text style 
             tbQuote.Inlines.Add(new Run($"{player.firstName} {player.lastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
@@ -134,10 +129,32 @@ namespace HHG_WPF_Fileversion
             tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
             tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
 
-            if (String.IsNullOrWhiteSpace(player.firstName) || String.IsNullOrWhiteSpace(player.lastName) || player.Age == 0)
-                return false;
-            else
-                return true;
+            }
+
+        public void ReadInput(string firstName, string lastName, string age, Player player)
+            {
+            //ask the user for their firstName, lastName and age and add these values to their respective player properties
+            player.firstName = firstName;
+            player.lastName = lastName;
+
+            if (int.TryParse(age, out int result))
+                player.Age = result;
+
+            //DateTime date = DateTime.Now;
+            //const string dateFormat = "dd MMMM, yyyy";
+            //const string timeFormat = "HH:mm:ss";
+            //const string dateMessage = "The date is:";
+            //const string timeMessage = "The time is:";
+
+            //tbQuote.Text = "";
+
+            ////add quote and set text style 
+            //tbQuote.Inlines.Add(new Run($"{player.firstName} {player.lastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
+
+            //tbQuote.Inlines.Add(new Run("Your quote is:\n\n"));
+            //tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
+            //tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
+
             }//end of ReadInput
         }//end of class Player
     }
