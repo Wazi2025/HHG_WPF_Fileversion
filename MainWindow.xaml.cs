@@ -269,7 +269,11 @@ namespace HHG_WPF_Fileversion
                 textBlock = new TextBlock();
                 textBlock.Foreground = Brushes.White;
                 textBlock.Name = "Test";
-                textBlock.Text = tbQuote.Text;
+
+                //Add Vogon warning to new textblocks. This is a bit cludgy but it'll suffice for now
+                //Can't use textBlock.Text = tbQuote.Text since that is text only
+                textBlock.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
+                textBlock.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
 
                 //add textBlock to MainCanvas
                 MainCanvas.Children.Add(textBlock);
