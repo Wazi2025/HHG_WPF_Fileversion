@@ -109,7 +109,7 @@ namespace HHG_WPF_Fileversion
             {
             player.firstName = "";
             player.lastName = "";
-            player.Age = 0;
+            player.Age = -1;
             }
 
         public void SetWarning(TextBlock tbQuote, Player player)

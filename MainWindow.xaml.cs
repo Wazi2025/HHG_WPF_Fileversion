@@ -202,12 +202,21 @@ namespace HHG_WPF_Fileversion
             //fetch quote
             player.FetchQuote(tbQuote, player);
 
-            //show chaos if any fields are empty
-            if (String.IsNullOrWhiteSpace(player.firstName) || String.IsNullOrWhiteSpace(player.lastName))
+            //show bouncing logo, clear quotes, restore button
+            if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.firstName) && String.IsNullOrWhiteSpace(player.lastName))
                 {
-                tbQuote.Visibility = Visibility.Hidden;
-                RandomizeButton();
-                CreateVogonQuote();
+                missingInfo = true;
+
+                image.Visibility = Visibility.Visible;
+                tbQuote.Visibility = Visibility.Visible;
+                image.Source = player.ShowImage(missingInfo);
+                player.SetWarning(tbQuote, player);
+                FadeInImage(0.50);
+                ZoomIn(missingInfo);
+
+                RestoreButtonPosition();
+
+                RemoveExtraQuotes();
                 }
             else
             //show quote
@@ -244,21 +253,13 @@ namespace HHG_WPF_Fileversion
                 RemoveExtraQuotes();
                 }
             else
-            //show bouncing logo, clear quotes, restore button
-            if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.firstName) && String.IsNullOrWhiteSpace(player.lastName))
+            //show chaos if any fields are empty
                 {
-                missingInfo = true;
-
-                image.Visibility = Visibility.Visible;
-                image.Source = player.ShowImage(missingInfo);
-
-                FadeInImage(0.50);
-                ZoomIn(missingInfo);
-
-                RestoreButtonPosition();
-
-                RemoveExtraQuotes();
+                tbQuote.Visibility = Visibility.Hidden;
+                RandomizeButton();
+                CreateVogonQuote();
                 }
+
             }
 
 
