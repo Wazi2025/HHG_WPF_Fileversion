@@ -4,11 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HHG_WPF_Fileversion"
-        mc:Ignorable="d"
-        SizeToContent="WidthAndHeight"
-        Background="Black"
+        mc:Ignorable="d"        
+        Background="Black"        
         Title="HHG time-based quotes" Height="605" Width="800">
-    <Grid x:Name="MainWindow1" Margin="0,0,60,112" MouseMove="MainWindow1_MouseMove" Unloaded="MainWindow1_Unloaded">
+    <Grid x:Name="MainWindow1" MouseMove="MainWindow1_MouseMove" Unloaded="MainWindow1_Unloaded">
         <UIElement.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>
@@ -28,13 +27,13 @@
         <TextBox x:Name="tbLastName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
         <TextBox x:Name="tbAge" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
         <Canvas x:Name="MainCanvas">
-            <Button Canvas.Left="180" Canvas.Top="230" x:Name="btnOK" Content="Get Quote" Click="btnOK_Click" IsDefault="True" RenderTransformOrigin="0.625,0.194"/>
+            <TextBlock x:Name="tbQuote" Canvas.Left="0" Canvas.Top="280" Foreground="White" Height="165" Width="400"/>
+            <Button x:Name="btnOK" Canvas.Left="180" Canvas.Top="230" Content="Get Quote" Click="btnOK_Click" IsDefault="True" RenderTransformOrigin="0.625,0.194"/>
         </Canvas>
         <Label Grid.Column="1" Foreground="White" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.469,0.945"/>
         <Label Grid.Column="1" Foreground="White" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top"/>
         <Label Grid.Column="1" Foreground="White" Content="First name" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.45,-0.526"/>
         <Image x:Name="image" HorizontalAlignment="Center" Height="306" Margin="260,21,0,0" VerticalAlignment="Center" Width="431" RenderTransformOrigin="0.497,0.518" Opacity="0.25"/>
-        <TextBlock x:Name="tbQuote" Foreground="White" HorizontalAlignment="Left" Height="165" Margin="32,271,0,0" VerticalAlignment="Top" Width="400"/>
-
+        
     </Grid>
 </Window>

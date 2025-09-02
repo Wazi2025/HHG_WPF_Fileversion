@@ -8,12 +8,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace HHG_WPF_Fileversion
-{
+    {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+        {
         //adding player field so we can instantiate player object in MainWindow's constructor
         private Player player;
 
@@ -25,12 +25,15 @@ namespace HHG_WPF_Fileversion
         //declare and initialize a Random object
         private Random random = new Random();
 
+        //declare Button to be used in CreateButtons method
         private Button button;
 
+        //declare TextBlock to be used in CreateVogonQuote
+        private TextBlock textBlock;
 
         //MainWindow's constructor
         public MainWindow()
-        {
+            {
             InitializeComponent();
 
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
@@ -42,11 +45,15 @@ namespace HHG_WPF_Fileversion
             //set window to autosize based on its content (controls like buttons, textboxes etc...)
             //this.SizeToContent = SizeToContent.WidthAndHeight;
 
+
             //create new brush and set window's background image
             ImageBrush brush = new ImageBrush();
             brush.Opacity = 0.25;
             brush.ImageSource = player.ShowImage();
             this.Background = brush;
+
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.WindowState = WindowState.Maximized;
 
             //init animation stuff
             InitImageControl();
@@ -64,10 +71,10 @@ namespace HHG_WPF_Fileversion
             //play music
             FadeInMusic();
 
-        }
+            }
 
         private void FadeInMusic()
-        {
+            {
             player.audioFileReader = new AudioFileReader(player.GetSong());
             player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
             player.volumeProvider.Volume = 0f; // start silent
@@ -77,14 +84,14 @@ namespace HHG_WPF_Fileversion
             player.outputDevice.Play();
 
             FadeInVolume(player.volumeProvider, durationSeconds: 3);
-        }
+            }
 
         private void FadeInVolume(VolumeSampleProvider volumeProvider, double durationSeconds = 2.0)
-        {
-            var timer = new DispatcherTimer
             {
+            var timer = new DispatcherTimer
+                {
                 Interval = TimeSpan.FromMilliseconds(50)
-            };
+                };
 
             int totalSteps = (int)(durationSeconds * 1000 / timer.Interval.TotalMilliseconds);
             int currentStep = 0;
@@ -96,16 +103,16 @@ namespace HHG_WPF_Fileversion
                 volumeProvider.Volume = Math.Min(volume, 1f);
 
                 if (currentStep >= totalSteps)
-                {
+                    {
                     timer.Stop();
-                }
+                    }
             };
 
             timer.Start();
-        }
+            }
 
         private void FadeOutMusic()
-        {
+            {
             player.audioFileReader = new AudioFileReader(player.GetSong());
             player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
             player.volumeProvider.Volume = 1.0f; // start at max volume
@@ -115,19 +122,19 @@ namespace HHG_WPF_Fileversion
             player.outputDevice.Play();
 
             FadeInVolume(player.volumeProvider, durationSeconds: 3);
-        }
+            }
 
         private void FadeInImage(double maxOpacity)
-        {
+            {
             DoubleAnimation fadeIn = new DoubleAnimation(0, maxOpacity, TimeSpan.FromSeconds(5));
 
             fadeIn.AutoReverse = true;
             fadeIn.RepeatBehavior = RepeatBehavior.Forever;
             image.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-        }
+            }
 
         private void ZoomIn(bool missingInfo)
-        {
+            {
             //the spinning animation will activate even though it's never called
             //when the spin animation starts it effectively carries over due to the use of TransFormGroup
             //the solution is to set it to null (remove it)
@@ -143,23 +150,23 @@ namespace HHG_WPF_Fileversion
 
             //only bounce if not 42
             if (missingInfo && player.Age == player.DontPanic)
-            {
-                zoomIn.EasingFunction = new BounceEase
                 {
+                zoomIn.EasingFunction = new BounceEase
+                    {
                     Bounces = 1,
                     Bounciness = 4,
                     EasingMode = EasingMode.EaseOut
-                };
-            }
+                    };
+                }
 
             //apply the animation (the zoom) to zoomTransform
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
 
-        }
+            }
 
         private void StartImageSpin()
-        {
+            {
             DoubleAnimation rotateAnimation = new DoubleAnimation();
 
             rotateAnimation.From = 0;
@@ -169,32 +176,30 @@ namespace HHG_WPF_Fileversion
 
             //apply the animation to rotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
-        }
+            }
 
         private void InitImageControl()
-        {
+            {
             //only one animation can be active so we have to add both animations to a TransformGroup
             //and then add the TransformGroup to the image RenderTransform
             image.RenderTransformOrigin = new Point(0.5, 0.5);
             transformGroup.Children.Add(zoomTransform);
             transformGroup.Children.Add(rotateTransform);
             image.RenderTransform = transformGroup;
-        }
+            }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
-        {
+            {
             bool missingInfo = false;
-
 
             image.Visibility = Visibility.Hidden;
 
             player.ClearPlayerData(player);
 
 
-
             //check for empty values
             if (!player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote))
-            {
+                {
                 missingInfo = true;
 
                 tbQuote.Text = "";
@@ -207,15 +212,15 @@ namespace HHG_WPF_Fileversion
                 FadeInImage(0.50);
                 ZoomIn(missingInfo);
 
-                //randomize button placement or technically the Canvas since btnOk is it's only member
-                Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
-                Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
+                RandomizeButton();
 
-                CreateButtons();
-            }
+                //CreateButtons();
+
+                CreateVogonQuote();
+                }
             else
             if (player.Age == player.DontPanic)
-            {
+                {
                 //set song position to it's most HHG's "moment"                
                 player.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
 
@@ -233,10 +238,12 @@ namespace HHG_WPF_Fileversion
 
                 //restore button's original position
                 RestoreButtonPosition();
+
                 RemoveExtraButtons();
-            }
+                RemoveExtraQuote();
+                }
             else
-            {
+                {
                 tbQuote.Text = "";
 
                 player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player, tbQuote);
@@ -245,48 +252,94 @@ namespace HHG_WPF_Fileversion
 
                 RestoreButtonPosition();
                 RemoveExtraButtons();
+                RemoveExtraQuote();
+                }
             }
-        }
+
+        private void RandomizeButton()
+            {
+            //randomize button placement or technically the Canvas since btnOk is it's only member
+            Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
+            Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
+            }
+        private void CreateVogonQuote()
+            {
+            for (int i = 0; i < 41; i++)
+                {
+                textBlock = new TextBlock();
+                textBlock.Foreground = Brushes.White;
+                textBlock.Name = "Test";
+                textBlock.Text = tbQuote.Text;
+
+                //add textBlock to MainCanvas
+                MainCanvas.Children.Add(textBlock);
+
+                Canvas.SetLeft(textBlock, random.Next((int)this.Width - 100));
+                Canvas.SetTop(textBlock, random.Next((int)this.Height - 100));
+                }
+            }
+
+        private void RemoveExtraQuote()
+            {
+            List<TextBlock> textBlocksToRemove = new List<TextBlock>();
+
+            foreach (UIElement element in MainCanvas.Children)
+                {
+                if (element is TextBlock textBlock && textBlock.Name != tbQuote.Name)
+                    {
+                    textBlocksToRemove.Add(textBlock);
+                    }
+                }
+
+            // Now remove them
+            foreach (TextBlock textBlock in textBlocksToRemove)
+                {
+                MainCanvas.Children.Remove(textBlock);
+                }
+            }
 
         private void CreateButtons()
-        {
-            button = new Button();
+            {
+            for (int i = 0; i < 41; i++)
+                {
+                button = new Button();
 
-            button.Content = btnOK.Content;
-            button.Name = "Test";
+                button.Content = btnOK.Content;
+                button.Name = "Test";
 
-            //add button to MainGrid
-            MainCanvas.Children.Add(button);
+                //add button to MainCanvas
+                MainCanvas.Children.Add(button);
 
-            Canvas.SetLeft(button, random.Next((int)this.Width - 100));
-            Canvas.SetTop(button, random.Next((int)this.Height - 100));
-        }
+                Canvas.SetLeft(button, random.Next((int)this.Width - 100));
+                Canvas.SetTop(button, random.Next((int)this.Height - 100));
+                }
+            }
 
         private void RemoveExtraButtons()
-        {
+            {
             // Collect buttons into a temporary list (to avoid modifying the collection during iteration)
             List<Button> buttonsToRemove = new List<Button>();
 
             foreach (UIElement element in MainCanvas.Children)
-            {
-                if (element is Button btn && btn.Name != "btnOK")
                 {
+                if (element is Button btn && btn.Name != btnOK.Name)
+                    {
                     buttonsToRemove.Add(btn);
+                    }
                 }
-            }
 
             // Now remove them
             foreach (Button btn in buttonsToRemove)
-            {
+                {
                 MainCanvas.Children.Remove(btn);
+                }
             }
-        }
 
         private void RestoreButtonPosition()
-        {
+            {
             Canvas.SetLeft(btnOK, 180);
             Canvas.SetTop(btnOK, 230);
-        }
+            }
 
         //private void Window_Loaded(object sender, RoutedEventArgs e)
         //    {
@@ -295,14 +348,14 @@ namespace HHG_WPF_Fileversion
 
 
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
+            {
             //randomize position
             //btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
 
             //attach button to mouse
             //Point position = Mouse.GetPosition(this);
             //btnOK.Margin = new Thickness(position.X, position.Y, 0, 0);
-        }
+            }
 
         //private void btnTest_Click(object sender, RoutedEventArgs e)
         //    {
@@ -310,7 +363,7 @@ namespace HHG_WPF_Fileversion
         //    }
 
         private void MainWindow1_Unloaded(object sender, RoutedEventArgs e)
-        {
+            {
             //FadeOutMusic();
 
             //release and free MediaPlayer resources
@@ -322,6 +375,10 @@ namespace HHG_WPF_Fileversion
             player.outputDevice.Dispose();
             player.audioFileReader.Dispose();
 
+            //just in case the user decides to just close the program
+            RemoveExtraButtons();
+            RemoveExtraQuote();
+
+            }
         }
     }
-}
