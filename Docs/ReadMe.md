@@ -2,12 +2,12 @@
 
 # Project "HHG WPF version"
 
-A WPF (Windows Presentation Foundation) version of "HHG_timebased_welcome_quotes_FileVersion"
+A WPF (Windows Presentation Foundation) version of _"HHG_timebased_welcome_quotes_FileVersion"_
 
-## Includes
+### Includes
 
-- Animation
-- Music
-- A pretty obvious easter egg 😁
-- A special message from Prostetnic Vogon Jeltz
-- No bypasses
+- [x] Animation
+- [x] Music
+- [x] A pretty obvious easter egg 😁
+- [x] A special message from Prostetnic Vogon Jeltz
+- [x] No bypasses

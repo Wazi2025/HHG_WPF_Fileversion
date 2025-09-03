@@ -109,7 +109,7 @@ namespace HHG_WPF_Fileversion
 
         public void SetWarning(TextBlock tbQuote, Player player)
             {
-            //tbQuote is used by both quotes and Vogon warning, therefore we clear it it's text property first
+            //tbQuote is used by both quotes and Vogon warning, therefore we clear it's text property first
             tbQuote.Text = "";
 
             tbQuote.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
@@ -137,7 +137,7 @@ namespace HHG_WPF_Fileversion
 
         public void ReadInput(string FirstName, string LastName, string age, Player player)
             {
-            //ask the user for their FirstName, LastName and age and add these values to their respective player properties
+            //ask the user for their FirstName, LastName and Age and add these values to their respective player properties
             player.FirstName = FirstName;
             player.LastName = LastName;
 

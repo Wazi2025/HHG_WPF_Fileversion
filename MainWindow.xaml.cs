@@ -51,6 +51,7 @@ namespace HHG_WPF_Fileversion
             InitMusicStuff();
 
             //set focus to FirstName textbox
+            //note: prolly set this in MainWindow.xaml
             tbFirstName.Focus();
 
             //set textwrap on
@@ -197,7 +198,7 @@ namespace HHG_WPF_Fileversion
                 RemoveExtraQuotes();
                 }
             else
-            //Show spinning hhg image, clear quotes, restore button
+            //show spinning hhg image, clear quotes, restore button
             if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
                 //set song position to it's most HHG's "moment"                
