@@ -68,7 +68,7 @@ namespace HHG_WPF_Fileversion
             //set fade-in to 2 seconds
             player.fade.BeginFadeIn(2000);
 
-            //attach to an output device and start playing
+            //attach to an output device
             player.outputDevice = new WaveOutEvent();
             player.outputDevice.Init(player.fade);
 
