@@ -11,12 +11,10 @@ namespace HHG_WPF_Fileversion
     {
     public class Player
         {
-        //first/lastName can be private since they won't be accessed outside Player class
-        public string firstName = "";
-        public string lastName = "";
-
-        //We only need get/set when property is to be accessed/modified outside it's class, i.e. it's public 
-        public int Age { get; set; }
+        //We only need get/set when property is to be accessed/modified outside it's class, i.e. it's public
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public int Age { get; set; } = 0;
 
         //Use readonly instead of const so we can use player.DontPanic instead of Player.DontPanic
         //const is implicitly static, hence the need for type (Player) instead of instance (player)
@@ -38,13 +36,10 @@ namespace HHG_WPF_Fileversion
         public readonly string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
         public readonly string author = "\n - Prostetnic Vogon Jeltz -";
 
-        //public MediaPlayer Song { get; } = new MediaPlayer();
-
         //we'll use NAudio since MediaPlayer class has limititations
         public IWavePlayer outputDevice;
         public AudioFileReader audioFileReader;
-        public VolumeSampleProvider volumeProvider;
-
+        public FadeInOutSampleProvider fade;
 
         //Player constructor
         //public Player()
@@ -53,8 +48,8 @@ namespace HHG_WPF_Fileversion
         //fileName = "Andromeda-Galaxy-Milky-Way.jpg";
         //fileDir = "Data";
         //filePath = "";
-        //firstName = "";
-        //lastName = "";
+        //FirstName = "";
+        //LastName = "";
         //}
 
         public void ReadFromFile(Player player)
@@ -107,14 +102,16 @@ namespace HHG_WPF_Fileversion
 
         public void ClearPlayerData(Player player)
             {
-            player.firstName = "";
-            player.lastName = "";
-            player.Age = -1;
+            player.FirstName = "";
+            player.LastName = "";
+            player.Age = 0;
             }
 
         public void SetWarning(TextBlock tbQuote, Player player)
             {
+            //tbQuote is used by both quotes and Vogon warning, therefore we clear it it's text property first
             tbQuote.Text = "";
+
             tbQuote.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
             tbQuote.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
             }
@@ -130,7 +127,7 @@ namespace HHG_WPF_Fileversion
             tbQuote.Text = "";
 
             //add quote and set text style 
-            tbQuote.Inlines.Add(new Run($"{player.firstName} {player.lastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
+            tbQuote.Inlines.Add(new Run($"{player.FirstName} {player.LastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
 
             tbQuote.Inlines.Add(new Run("Your quote is:\n\n"));
             tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
@@ -138,29 +135,14 @@ namespace HHG_WPF_Fileversion
 
             }
 
-        public void ReadInput(string firstName, string lastName, string age, Player player)
+        public void ReadInput(string FirstName, string LastName, string age, Player player)
             {
-            //ask the user for their firstName, lastName and age and add these values to their respective player properties
-            player.firstName = firstName;
-            player.lastName = lastName;
+            //ask the user for their FirstName, LastName and age and add these values to their respective player properties
+            player.FirstName = FirstName;
+            player.LastName = LastName;
 
             if (int.TryParse(age, out int result))
                 player.Age = result;
-
-            //DateTime date = DateTime.Now;
-            //const string dateFormat = "dd MMMM, yyyy";
-            //const string timeFormat = "HH:mm:ss";
-            //const string dateMessage = "The date is:";
-            //const string timeMessage = "The time is:";
-
-            //tbQuote.Text = "";
-
-            ////add quote and set text style 
-            //tbQuote.Inlines.Add(new Run($"{player.firstName} {player.lastName} ({player.Age} years).") { FontWeight = FontWeights.Bold });
-
-            //tbQuote.Inlines.Add(new Run("Your quote is:\n\n"));
-            //tbQuote.Inlines.Add(new Run($"{player.greetingList[date.Second]}\n\n") { FontStyle = FontStyles.Italic });
-            //tbQuote.Inlines.Add(new Run($"{dateMessage} {date.DayOfWeek} {date.ToString(dateFormat)}\n{timeMessage} {date.ToString(timeFormat)}\n\n"));
 
             }//end of ReadInput
         }//end of class Player

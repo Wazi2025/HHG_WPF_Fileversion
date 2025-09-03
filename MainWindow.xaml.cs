@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace HHG_WPF_Fileversion
     {
@@ -26,7 +25,7 @@ namespace HHG_WPF_Fileversion
         private Random random = new Random();
 
         //declare Button to be used in CreateButtons method
-        private Button button;
+        //private Button button;
 
         //declare TextBlock to be used in CreateVogonQuote
         private TextBlock textBlock;
@@ -42,10 +41,41 @@ namespace HHG_WPF_Fileversion
             //fetch contents in quotes file
             player.ReadFromFile(player);
 
-            //set window to autosize based on its content (controls like buttons, textboxes etc...)
-            //this.SizeToContent = SizeToContent.WidthAndHeight;
+            //init screen stuff
+            InitScreenStuff();
 
+            //init animation stuff
+            InitImageControl();
 
+            //init music stuff
+            InitMusicStuff();
+
+            //set focus to FirstName textbox
+            tbFirstName.Focus();
+
+            //set textwrap on
+            //tbQuote.TextWrapping = TextWrapping.Wrap;
+            }
+
+        private void InitMusicStuff()
+            {
+            //init audio stuff
+            player.audioFileReader = new AudioFileReader(player.GetSong());
+            player.fade = new FadeInOutSampleProvider(player.audioFileReader, true);
+
+            //set fade-in to 2 seconds
+            player.fade.BeginFadeIn(2000);
+
+            //attach to an output device and start playing
+            player.outputDevice = new WaveOutEvent();
+            player.outputDevice.Init(player.fade);
+
+            //start playing
+            player.outputDevice.Play();
+            }
+
+        private void InitScreenStuff()
+            {
             //create new brush and set window's background image
             ImageBrush brush = new ImageBrush();
             brush.Opacity = 0.25;
@@ -54,74 +84,6 @@ namespace HHG_WPF_Fileversion
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.WindowState = WindowState.Maximized;
-
-            //init animation stuff
-            InitImageControl();
-
-            //set focus to firstName textbox
-            tbFirstName.Focus();
-
-            //set textwrap on
-            tbQuote.TextWrapping = TextWrapping.Wrap;
-
-            //sound test using MediaPlayer            
-            //player.Song.Open(new Uri(player.GetSong()));
-            //player.Song.Play();
-
-            //play music
-            FadeInMusic();
-
-            }
-
-        private void FadeInMusic()
-            {
-            player.audioFileReader = new AudioFileReader(player.GetSong());
-            player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
-            player.volumeProvider.Volume = 0f; // start silent
-
-            player.outputDevice = new WaveOutEvent(); // or use WaveOut for more control
-            player.outputDevice.Init(player.volumeProvider);
-            player.outputDevice.Play();
-
-            FadeInVolume(player.volumeProvider, durationSeconds: 3);
-            }
-
-        private void FadeInVolume(VolumeSampleProvider volumeProvider, double durationSeconds = 2.0)
-            {
-            var timer = new DispatcherTimer
-                {
-                Interval = TimeSpan.FromMilliseconds(50)
-                };
-
-            int totalSteps = (int)(durationSeconds * 1000 / timer.Interval.TotalMilliseconds);
-            int currentStep = 0;
-
-            timer.Tick += (s, e) =>
-            {
-                currentStep++;
-                float volume = (float)currentStep / totalSteps;
-                volumeProvider.Volume = Math.Min(volume, 1f);
-
-                if (currentStep >= totalSteps)
-                    {
-                    timer.Stop();
-                    }
-            };
-
-            timer.Start();
-            }
-
-        private void FadeOutMusic()
-            {
-            player.audioFileReader = new AudioFileReader(player.GetSong());
-            player.volumeProvider = new VolumeSampleProvider(player.audioFileReader);
-            player.volumeProvider.Volume = 1.0f; // start at max volume
-
-            player.outputDevice = new WaveOutEvent();
-            player.outputDevice.Init(player.volumeProvider);
-            player.outputDevice.Play();
-
-            FadeInVolume(player.volumeProvider, durationSeconds: 3);
             }
 
         private void FadeInImage(double maxOpacity)
@@ -148,21 +110,20 @@ namespace HHG_WPF_Fileversion
             zoomIn.AutoReverse = true;
             zoomIn.RepeatBehavior = RepeatBehavior.Forever;
 
-            //only bounce if not 42
+            //only bounce if only 42 
             if (missingInfo && player.Age == player.DontPanic)
                 {
-                zoomIn.EasingFunction = new BounceEase
-                    {
-                    Bounces = 1,
-                    Bounciness = 4,
-                    EasingMode = EasingMode.EaseOut
-                    };
+                BounceEase bounceEase = new BounceEase();
+                bounceEase.Bounces = 1;
+                bounceEase.Bounciness = 4;
+                bounceEase.EasingMode = EasingMode.EaseOut;
+
+                zoomIn.EasingFunction = bounceEase;
                 }
 
-            //apply the animation (the zoom) to zoomTransform
+            //apply the animation (and bounce if applicable) to zoomTransform
             zoomTransform.BeginAnimation(ScaleTransform.ScaleXProperty, zoomIn);
             zoomTransform.BeginAnimation(ScaleTransform.ScaleYProperty, zoomIn);
-
             }
 
         private void StartImageSpin()
@@ -174,7 +135,7 @@ namespace HHG_WPF_Fileversion
             rotateAnimation.Duration = TimeSpan.FromSeconds(10);
             rotateAnimation.RepeatBehavior = RepeatBehavior.Forever;
 
-            //apply the animation to rotateTransform
+            //apply the animation (spin) to rotateTransform
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
             }
 
@@ -203,7 +164,7 @@ namespace HHG_WPF_Fileversion
             player.FetchQuote(tbQuote, player);
 
             //show bouncing logo, clear quotes, restore button
-            if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.firstName) && String.IsNullOrWhiteSpace(player.lastName))
+            if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.FirstName) && String.IsNullOrWhiteSpace(player.LastName))
                 {
                 missingInfo = true;
 
@@ -220,11 +181,15 @@ namespace HHG_WPF_Fileversion
                 }
             else
             //show quote
-            if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.firstName) && !String.IsNullOrWhiteSpace(player.lastName))
+            if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
-                image.Visibility = Visibility.Hidden;
+                image.Visibility = Visibility.Visible;
                 tbQuote.Visibility = Visibility.Visible;
                 player.FetchQuote(tbQuote, player);
+
+                image.Source = player.ShowImage(true);
+                FadeInImage(0.50);
+                ZoomIn(missingInfo);
 
                 RestoreButtonPosition();
 
@@ -232,14 +197,13 @@ namespace HHG_WPF_Fileversion
                 }
             else
             //Show spinning hhg image, clear quotes, restore button
-            if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.firstName) && !String.IsNullOrWhiteSpace(player.lastName))
+            if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
                 //set song position to it's most HHG's "moment"                
                 player.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
 
-                //player.Song.Position = new TimeSpan(0, 1, 10);
-                //FadeInMusic();
-
+                //player.fade.BeginFadeIn(1000);
+                image.Source = player.ShowImage(missingInfo);
                 image.Visibility = Visibility.Visible;
                 image.Source = player.ShowImage(missingInfo);
                 tbQuote.Visibility = Visibility.Hidden;
@@ -259,8 +223,7 @@ namespace HHG_WPF_Fileversion
                 RandomizeButton();
                 CreateVogonQuote();
                 }
-
-            }
+            }//end of btnOk_Click
 
 
         private void RandomizeButton()
@@ -268,6 +231,9 @@ namespace HHG_WPF_Fileversion
             //randomize button placement or technically the Canvas
             Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
             Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
+
+            //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
+            //since no other elements use ZIndex we can just use 1
             }
         private void CreateVogonQuote()
             {
@@ -288,18 +254,15 @@ namespace HHG_WPF_Fileversion
                 //add textBlock to MainCanvas
                 MainCanvas.Children.Add(textBlock);
 
-                //tbFirstName.Text = i.ToString();
-
                 //randomize textblocks
                 Canvas.SetLeft(textBlock, random.Next((int)this.Width - 100));
                 Canvas.SetTop(textBlock, random.Next((int)this.Height - 100));
                 }
-
             }
 
         private void RemoveExtraQuotes()
             {
-            // Collect textblocks into a temporary list (to avoid modifying the collection during iteration)
+            //collect textblocks into a temporary list (to avoid modifying the collection during iteration)
             List<TextBlock> textBlocksToRemove = new List<TextBlock>();
 
             //iterate through each element in canvas
@@ -312,59 +275,54 @@ namespace HHG_WPF_Fileversion
                     }
                 }
 
-            // Now remove them
+            //now remove them
             foreach (TextBlock textBlock in textBlocksToRemove)
                 {
                 MainCanvas.Children.Remove(textBlock);
                 }
             }
 
-        private void CreateButtons()
-            {
-            for (int i = 0; i < player.DontPanic - 1; i++)
-                {
-                button = new Button();
+        //private void CreateButtons()
+        //    {
+        //    for (int i = 0; i < player.DontPanic - 1; i++)
+        //        {
+        //        button = new Button();
 
-                button.Content = btnOK.Content;
-                button.Name = "Test";
+        //        button.Content = btnOK.Content;
+        //        button.Name = "Test";
 
-                //add button to MainCanvas
-                MainCanvas.Children.Add(button);
+        //        //add button to MainCanvas
+        //        MainCanvas.Children.Add(button);
 
-                Canvas.SetLeft(button, random.Next((int)this.Width - 100));
-                Canvas.SetTop(button, random.Next((int)this.Height - 100));
-                }
-            }
+        //        Canvas.SetLeft(button, random.Next((int)this.Width - 100));
+        //        Canvas.SetTop(button, random.Next((int)this.Height - 100));
+        //        }
+        //    }
 
-        private void RemoveExtraButtons()
-            {
-            List<Button> buttonsToRemove = new List<Button>();
+        //private void RemoveExtraButtons()
+        //    {
+        //    List<Button> buttonsToRemove = new List<Button>();
 
-            foreach (UIElement element in MainCanvas.Children)
-                {
-                if (element is Button btn && btn.Name != btnOK.Name)
-                    {
-                    buttonsToRemove.Add(btn);
-                    }
-                }
+        //    foreach (UIElement element in MainCanvas.Children)
+        //        {
+        //        if (element is Button btn && btn.Name != btnOK.Name)
+        //            {
+        //            buttonsToRemove.Add(btn);
+        //            }
+        //        }
 
-            foreach (Button btn in buttonsToRemove)
-                {
-                MainCanvas.Children.Remove(btn);
-                }
-            }
+        //    foreach (Button btn in buttonsToRemove)
+        //        {
+        //        MainCanvas.Children.Remove(btn);
+        //        }
+        //    }
 
         private void RestoreButtonPosition()
             {
             //restore button's original position (from MainWindow.xaml)
-            Canvas.SetLeft(btnOK, 180);
+            Canvas.SetLeft(btnOK, 165);
             Canvas.SetTop(btnOK, 230);
             }
-
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //    {
-
-        //    }
 
 
         private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -377,19 +335,9 @@ namespace HHG_WPF_Fileversion
             //btnOK.Margin = new Thickness(position.X, position.Y, 0, 0);
             }
 
-        //private void btnTest_Click(object sender, RoutedEventArgs e)
-        //    {
-
-        //    }
 
         private void MainWindow1_Unloaded(object sender, RoutedEventArgs e)
             {
-            //FadeOutMusic();
-
-            //release and free MediaPlayer resources
-            //player.Song.Stop();
-            //player.Song.Close();
-
             //release and free NAudio resources
             player.outputDevice.Stop();
             player.outputDevice.Dispose();
@@ -398,7 +346,6 @@ namespace HHG_WPF_Fileversion
             //just in case the user decides to just close the program
             //RemoveExtraButtons();
             RemoveExtraQuotes();
-
             }
         }
     }
