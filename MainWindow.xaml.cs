@@ -54,6 +54,7 @@ namespace HHG_WPF_Fileversion
             tbFirstName.Focus();
 
             //set textwrap on
+            //don't need this, done in MainWindow.xaml
             //tbQuote.TextWrapping = TextWrapping.Wrap;
             }
 
@@ -180,7 +181,7 @@ namespace HHG_WPF_Fileversion
                 RemoveExtraQuotes();
                 }
             else
-            //show quote
+            //show quote and logo, restore button
             if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
                 image.Visibility = Visibility.Visible;
@@ -205,7 +206,7 @@ namespace HHG_WPF_Fileversion
                 //player.fade.BeginFadeIn(1000);
                 image.Source = player.ShowImage(missingInfo);
                 image.Visibility = Visibility.Visible;
-                image.Source = player.ShowImage(missingInfo);
+
                 tbQuote.Visibility = Visibility.Hidden;
 
                 FadeInImage(1.0);
