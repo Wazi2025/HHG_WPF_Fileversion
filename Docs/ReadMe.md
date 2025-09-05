@@ -11,3 +11,5 @@ A WPF (Windows Presentation Foundation) version of _"HHG_timebased_welcome_quote
 - [x] A pretty obvious easter egg 😁
 - [x] A special message from Prostetnic Vogon Jeltz
 - [x] No bypasses
+- [x] A SEP
+- [x] [An official Owner's Manual](Owners_Manual.md)
