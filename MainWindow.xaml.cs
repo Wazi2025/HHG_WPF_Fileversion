@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace HHG_WPF_Fileversion
     {
@@ -89,9 +87,9 @@ namespace HHG_WPF_Fileversion
                 gfxManager.FadeInImage(0.50, image);
                 gfxManager.ZoomIn(missingInfo, player);
 
-                RestoreButtonPosition();
+                gfxManager.RestoreButtonPosition(btnOK);
 
-                RemoveExtraQuotes();
+                gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
                 }
             else
             //show quote and logo, restore button
@@ -105,9 +103,9 @@ namespace HHG_WPF_Fileversion
                 gfxManager.FadeInImage(0.50, image);
                 gfxManager.ZoomIn(missingInfo, player);
 
-                RestoreButtonPosition();
+                gfxManager.RestoreButtonPosition(btnOK);
 
-                RemoveExtraQuotes();
+                gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
                 }
             else
             //show spinning hhg image, clear quotes, restore button
@@ -126,132 +124,21 @@ namespace HHG_WPF_Fileversion
                 gfxManager.ZoomIn(missingInfo, player);
                 gfxManager.StartImageSpin();
 
-                RestoreButtonPosition();
+                gfxManager.RestoreButtonPosition(btnOK);
 
-                RemoveExtraQuotes();
+                gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
                 }
             else
             //show chaos if any fields are empty
                 {
                 tbQuote.Visibility = Visibility.Hidden;
                 gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
-                MultiplyVogonQuote();
+                gfxManager.MultiplyVogonQuote(player, MainCanvas);
                 }
             }//end of btnOk_Click
 
 
-        //private void RandomizeButton()
-        //    {
-        //    //randomize button placement or technically the Canvas
-        //    Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
-        //    Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
-
-        //    //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
-        //    //since no other elements use ZIndex we can just use 1
-        //    }
-        private void MultiplyVogonQuote()
-            {
-            //instantiate textblocks
-            for (int i = 0; i <= player.DontPanic; i++)
-                {
-                textBlock = new TextBlock();
-
-                //brush must be something light since the background is pretty dark
-                textBlock.Foreground = Brushes.White;
-                textBlock.Name = "Test";
-
-                //Add Vogon warning to new textblocks. This is a bit cludgy but it'll suffice for now
-                //Can't use textBlock.Text = tbQuote.Text since that is pure text only
-                textBlock.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
-                textBlock.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
-
-                //add textBlock to MainCanvas
-                MainCanvas.Children.Add(textBlock);
-
-                //randomize position of textblocks
-                Canvas.SetLeft(textBlock, player.random.Next((int)this.Width - 100));
-                Canvas.SetTop(textBlock, player.random.Next((int)this.Height - 100));
-
-                //declare and instantiate a RotateTransform
-                RotateTransform angle = new RotateTransform();
-
-                //set angle randomly
-                angle.Angle = player.random.Next(360);
-
-                //set origin/rotation position to center of textBlock
-                textBlock.RenderTransformOrigin = new Point(0.5, 0.5);
-
-                //attach angle to textBlocks RenderTransform
-                textBlock.RenderTransform = angle;
-                }
-            }
-
-        private void RemoveExtraQuotes()
-            {
-            //collect textblocks into a temporary list (to avoid modifying the collection during iteration)
-            List<TextBlock> textBlocksToRemove = new List<TextBlock>();
-
-            //iterate through each element in canvas
-            foreach (UIElement element in MainCanvas.Children)
-                {
-                //add to list if element is of type textblock AND it's name is anything but the original textblock
-                if (element is TextBlock textBlock && textBlock.Name != tbQuote.Name)
-                    {
-                    textBlocksToRemove.Add(textBlock);
-                    }
-                }
-
-            //now remove them
-            foreach (TextBlock textBlock in textBlocksToRemove)
-                {
-                MainCanvas.Children.Remove(textBlock);
-                }
-            }
-
-        //private void CreateButtons()
-        //    {
-        //    for (int i = 0; i < player.DontPanic - 1; i++)
-        //        {
-        //        button = new Button();
-
-        //        button.Content = btnOK.Content;
-        //        button.Name = "Test";
-
-        //        //add button to MainCanvas
-        //        MainCanvas.Children.Add(button);
-
-        //        Canvas.SetLeft(button, random.Next((int)this.Width - 100));
-        //        Canvas.SetTop(button, random.Next((int)this.Height - 100));
-        //        }
-        //    }
-
-        //private void RemoveExtraButtons()
-        //    {
-        //    List<Button> buttonsToRemove = new List<Button>();
-
-        //    foreach (UIElement element in MainCanvas.Children)
-        //        {
-        //        if (element is Button btn && btn.Name != btnOK.Name)
-        //            {
-        //            buttonsToRemove.Add(btn);
-        //            }
-        //        }
-
-        //    foreach (Button btn in buttonsToRemove)
-        //        {
-        //        MainCanvas.Children.Remove(btn);
-        //        }
-        //    }
-
-        private void RestoreButtonPosition()
-            {
-            //restore button's original position (from MainWindow.xaml)
-            Canvas.SetLeft(btnOK, 165);
-            Canvas.SetTop(btnOK, 230);
-            }
-
-
-        private void MainWindow1_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void MainGrid_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
             {
             //randomize position
             //btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
@@ -262,16 +149,19 @@ namespace HHG_WPF_Fileversion
             }
 
 
-        private void MainWindow1_Unloaded(object sender, RoutedEventArgs e)
+        private void MainGrid_Unloaded(object sender, RoutedEventArgs e)
             {
             //release and free NAudio resources
-            musicManager.outputDevice.Stop();
-            musicManager.outputDevice.Dispose();
-            musicManager.audioFileReader.Dispose();
+            //musicManager.outputDevice.Stop();
+            //musicManager.outputDevice.Dispose();
+            //musicManager.audioFileReader.Dispose();
+
+            //call Dispose method to free resources instead
+            musicManager.Dispose();
 
             //just in case the user decides to just close the program
             //RemoveExtraButtons();
-            RemoveExtraQuotes();
+            gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
             }
         }
     }
