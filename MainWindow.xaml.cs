@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 
 namespace HHG_WPF_Fileversion
     {
@@ -23,8 +22,6 @@ namespace HHG_WPF_Fileversion
         //declare Button to be used in CreateButtons method
         //private Button button;
 
-        //declare TextBlock to be used in MultiplyVogonQuote
-        private TextBlock textBlock;
 
         //MainWindow's constructor
         public MainWindow()
@@ -35,7 +32,7 @@ namespace HHG_WPF_Fileversion
             player = new Player();
 
             //we'll do the same here as with player
-            musicManager = new MusicManager();
+            musicManager = new MusicManager(player);
 
             //we'll do the same here as with player
             gfxManager = new GfxManager();
@@ -50,7 +47,8 @@ namespace HHG_WPF_Fileversion
             gfxManager.InitImageControl(image);
 
             //init music stuff
-            musicManager.InitMusicStuff(player);
+            //update: moved init stuff into MusicManager constructor
+            //musicManager.InitMusicStuff(player);
 
             //set focus to FirstName textbox
             //note: prolly set this in MainWindow.xaml
@@ -112,7 +110,7 @@ namespace HHG_WPF_Fileversion
             if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
                 //set song position to it's most HHG's "moment"                
-                musicManager.audioFileReader.CurrentTime = TimeSpan.FromMinutes(1.10);
+                musicManager.AudioReader.CurrentTime = TimeSpan.FromMinutes(1.10);
 
                 //player.fade.BeginFadeIn(1000);
                 image.Source = gfxManager.ShowImage(missingInfo, player);
@@ -156,7 +154,7 @@ namespace HHG_WPF_Fileversion
             //musicManager.outputDevice.Dispose();
             //musicManager.audioFileReader.Dispose();
 
-            //call Dispose method to free resources instead
+            //call Dispose method to free resources instead            
             musicManager.Dispose();
 
             //just in case the user decides to just close the program
