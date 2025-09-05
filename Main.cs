@@ -152,6 +152,17 @@ namespace HHG_WPF_Fileversion
 
             return bitmapImage;
             }
+
+        public void RandomizeButton(Canvas canvas, Button btnOK, Random random)
+            {
+            //randomize button placement or technically the Canvas
+            //note: SetLeft is a static method, hence we can only access it with it's type
+            Canvas.SetLeft(btnOK, random.Next((int)canvas.ActualWidth - 100));
+            Canvas.SetTop(btnOK, random.Next((int)canvas.ActualHeight - 100));
+
+            //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
+            //since no other elements use ZIndex we can just use 1
+            }
         }//end of GfxManager
 
     public class Player
@@ -180,6 +191,9 @@ namespace HHG_WPF_Fileversion
 
         public readonly string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
         public readonly string author = "\n - Prostetnic Vogon Jeltz -";
+
+        //declare and initialize a Random object
+        public Random random = new Random();
 
         //Player constructor
         //public Player()

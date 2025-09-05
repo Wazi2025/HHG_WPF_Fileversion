@@ -19,8 +19,8 @@ namespace HHG_WPF_Fileversion
         //adding gfxManager field
         private GfxManager gfxManager;
 
-        //declare and initialize a Random object
-        private Random random = new Random();
+        ////declare and initialize a Random object
+        //private Random random = new Random();
 
         //declare Button to be used in CreateButtons method
         //private Button button;
@@ -134,21 +134,21 @@ namespace HHG_WPF_Fileversion
             //show chaos if any fields are empty
                 {
                 tbQuote.Visibility = Visibility.Hidden;
-                RandomizeButton();
+                gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
                 MultiplyVogonQuote();
                 }
             }//end of btnOk_Click
 
 
-        private void RandomizeButton()
-            {
-            //randomize button placement or technically the Canvas
-            Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
-            Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
+        //private void RandomizeButton()
+        //    {
+        //    //randomize button placement or technically the Canvas
+        //    Canvas.SetLeft(btnOK, random.Next((int)this.Width - 100));
+        //    Canvas.SetTop(btnOK, random.Next((int)this.Height - 100));
 
-            //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
-            //since no other elements use ZIndex we can just use 1
-            }
+        //    //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
+        //    //since no other elements use ZIndex we can just use 1
+        //    }
         private void MultiplyVogonQuote()
             {
             //instantiate textblocks
@@ -169,14 +169,14 @@ namespace HHG_WPF_Fileversion
                 MainCanvas.Children.Add(textBlock);
 
                 //randomize position of textblocks
-                Canvas.SetLeft(textBlock, random.Next((int)this.Width - 100));
-                Canvas.SetTop(textBlock, random.Next((int)this.Height - 100));
+                Canvas.SetLeft(textBlock, player.random.Next((int)this.Width - 100));
+                Canvas.SetTop(textBlock, player.random.Next((int)this.Height - 100));
 
                 //declare and instantiate a RotateTransform
                 RotateTransform angle = new RotateTransform();
 
                 //set angle randomly
-                angle.Angle = random.Next(360);
+                angle.Angle = player.random.Next(360);
 
                 //set origin/rotation position to center of textBlock
                 textBlock.RenderTransformOrigin = new Point(0.5, 0.5);
