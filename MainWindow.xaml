@@ -7,7 +7,7 @@
         mc:Ignorable="d"        
         Background="Black" x:Name="mainWindow"       
         Title="HHG time-based quotes" Height="605" Width="800">
-    <Grid x:Name="MainGrid" MouseMove="MainGrid_MouseMove" Unloaded="MainGrid_Unloaded">
+    <Grid x:Name="MainGrid" Unloaded="MainGrid_Unloaded">
         <UIElement.RenderTransform>
             <TransformGroup>
                 <ScaleTransform/>

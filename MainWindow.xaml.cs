@@ -87,19 +87,22 @@ namespace HHG_WPF_Fileversion
                 }
             else
             //show quote and logo, restore button
-            if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
+            if (player.Age != 0)
                 {
-                image.Visibility = Visibility.Visible;
-                tbQuote.Visibility = Visibility.Visible;
-                player.FetchQuote(tbQuote, player);
+                if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
+                    {
+                    image.Visibility = Visibility.Visible;
+                    tbQuote.Visibility = Visibility.Visible;
+                    player.FetchQuote(tbQuote, player);
 
-                image.Source = gfxManager.ShowImage(true, player);
-                gfxManager.FadeInImage(0.50, image);
-                gfxManager.ZoomIn(missingInfo, player);
+                    image.Source = gfxManager.ShowImage(true, player);
+                    gfxManager.FadeInImage(0.50, image);
+                    gfxManager.ZoomIn(missingInfo, player);
 
-                gfxManager.RestoreButtonPosition(btnOK);
+                    gfxManager.RestoreButtonPosition(btnOK);
 
-                gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
+                    gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
+                    }
                 }
             else
             //show spinning hhg image, clear quotes, restore button
@@ -126,21 +129,11 @@ namespace HHG_WPF_Fileversion
             //show chaos if any fields are empty
                 {
                 tbQuote.Visibility = Visibility.Hidden;
+
                 gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
                 gfxManager.MultiplyVogonQuote(player, MainCanvas);
                 }
             }//end of btnOk_Click
-
-
-        private void MainGrid_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-            {
-            //randomize position
-            //btnOK.Margin = new Thickness(random.Next(width - 100), random.Next(height), 0, 0);
-
-            //attach button to mouse
-            //Point position = Mouse.GetPosition(this);
-            //btnOK.Margin = new Thickness(position.X, position.Y, 0, 0);
-            }
 
 
         private void MainGrid_Unloaded(object sender, RoutedEventArgs e)

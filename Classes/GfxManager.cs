@@ -19,6 +19,7 @@ namespace HHG_WPF_Fileversion
         private RotateTransform rotateTransform = new RotateTransform(0);
         private TransformGroup transformGroup = new TransformGroup();
 
+
         public void InitScreenStuff(Player player, GfxManager gfxManager, Window mainWindow)
             {
             //create new brush and set window's background image
@@ -100,6 +101,13 @@ namespace HHG_WPF_Fileversion
             player.filePath = Path.Combine(player.projectRoot, player.fileDir, player.fileName);
 
             bitmapImage = new BitmapImage(new Uri(player.filePath));
+
+            //both ShowImage() methods: this might be a safer method according to ChatGPT. Not entirely sure I see the point, though.
+            //the file is automatically released when the program ends anyway
+            //bitmapImage.BeginInit();
+            //bitmapImage.UriSource = new Uri(player.filePath);
+            //bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            //bitmapImage.EndInit();
 
             return bitmapImage;
             }
