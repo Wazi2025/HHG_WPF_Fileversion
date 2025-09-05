@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using HHG_WPF_Fileversion.Classes;
+using System.Windows;
 
 namespace HHG_WPF_Fileversion
     {
@@ -38,7 +39,7 @@ namespace HHG_WPF_Fileversion
             gfxManager = new GfxManager();
 
             //fetch contents in quotes file
-            player.ReadFromFile(player);
+            player.ReadFromFile();
 
             //init screen stuff
             gfxManager.InitScreenStuff(player, gfxManager, mainWindow);
@@ -64,7 +65,7 @@ namespace HHG_WPF_Fileversion
             player.ClearPlayerData(player);
 
             //Read player data
-            player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text, player);
+            player.ReadInput(tbFirstName.Text, tbLastName.Text, tbAge.Text);
 
             //fetch quote
             player.FetchQuote(tbQuote, player);
@@ -87,22 +88,19 @@ namespace HHG_WPF_Fileversion
                 }
             else
             //show quote and logo, restore button
-            if (player.Age != 0)
+              if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
-                if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
-                    {
-                    image.Visibility = Visibility.Visible;
-                    tbQuote.Visibility = Visibility.Visible;
-                    player.FetchQuote(tbQuote, player);
+                image.Visibility = Visibility.Visible;
+                tbQuote.Visibility = Visibility.Visible;
+                player.FetchQuote(tbQuote, player);
 
-                    image.Source = gfxManager.ShowImage(true, player);
-                    gfxManager.FadeInImage(0.50, image);
-                    gfxManager.ZoomIn(missingInfo, player);
+                image.Source = gfxManager.ShowImage(true, player);
+                gfxManager.FadeInImage(0.50, image);
+                gfxManager.ZoomIn(missingInfo, player);
 
-                    gfxManager.RestoreButtonPosition(btnOK);
+                gfxManager.RestoreButtonPosition(btnOK);
 
-                    gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
-                    }
+                gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
                 }
             else
             //show spinning hhg image, clear quotes, restore button

@@ -3,7 +3,7 @@ using NAudio.Wave.SampleProviders;
 using System.IO;
 
 
-namespace HHG_WPF_Fileversion
+namespace HHG_WPF_Fileversion.Classes
     {
     //we don't have have to change it's type to IDisposable but now we can use the "using" statement 
     public class MusicManager : IDisposable
@@ -44,10 +44,10 @@ namespace HHG_WPF_Fileversion
 
         public string GetSong(Player player)
             {
-            player.fileName = "Journey of the Sorcerer.mp4";
-            player.filePath = Path.Combine(player.projectRoot, player.fileDir, player.fileName);
+            player.FileName = "Journey of the Sorcerer.mp4";
+            player.FilePath = Path.Combine(player.ProjectRoot, player.FileDir, player.FileName);
 
-            return player.filePath;
+            return player.FilePath;
             }
         }//end of MusicManager class
     }

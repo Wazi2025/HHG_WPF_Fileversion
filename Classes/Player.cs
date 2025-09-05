@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace HHG_WPF_Fileversion
+namespace HHG_WPF_Fileversion.Classes
     {
     public class Player
         {
@@ -24,10 +24,10 @@ namespace HHG_WPF_Fileversion
         ////declare and initialize a BitmapImage for use with...well, bitmaps AKA images
         //private BitmapImage bitmapImage = new BitmapImage();
 
-        public string projectRoot { get; } = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-        public string fileDir { get; } = "Data";
-        public string fileName { get; set; } = "";
-        public string filePath { get; set; } = "";
+        public string ProjectRoot { get; } = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        public string FileDir { get; } = "Data";
+        public string FileName { get; set; } = "";
+        public string FilePath { get; set; } = "";
 
         public readonly string warning = "'Please fill out all fields. Although bypasses are the bedrock of humanity, this is the one and only exception.'";
         public readonly string author = "\n - Prostetnic Vogon Jeltz -";
@@ -38,22 +38,22 @@ namespace HHG_WPF_Fileversion
         //Player constructor
         //public Player()
         //    {
-        //projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-        //fileName = "Andromeda-Galaxy-Milky-Way.jpg";
-        //fileDir = "Data";
-        //filePath = "";
+        //ProjectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        //FileName = "Andromeda-Galaxy-Milky-Way.jpg";
+        //FileDir = "Data";
+        //FilePath = "";
         //FirstName = "";
         //LastName = "";
         //}
 
-        public void ReadFromFile(Player player)
+        public void ReadFromFile()
             {
-            fileName = "quotes.txt";
+            FileName = "quotes.txt";
 
-            filePath = Path.Combine(projectRoot, fileDir, fileName);
+            FilePath = Path.Combine(ProjectRoot, FileDir, FileName);
 
             //Open a streamReader
-            using StreamReader streamReader = new StreamReader(filePath);
+            using StreamReader streamReader = new StreamReader(FilePath);
 
             //Add each line to the greetingList as long as streamReader hasn't reached the end of the stream i.e. the file
             while (!streamReader.EndOfStream)
@@ -98,7 +98,7 @@ namespace HHG_WPF_Fileversion
 
             }
 
-        public void ReadInput(string firstName, string lastName, string age, Player player)
+        public void ReadInput(string firstName, string lastName, string age)
             {
             //ask the user for their FirstName, LastName and Age and add these values to their respective player properties
             FirstName = firstName;

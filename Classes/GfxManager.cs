@@ -7,7 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
-namespace HHG_WPF_Fileversion
+namespace HHG_WPF_Fileversion.Classes
     {
     public class GfxManager
         {
@@ -97,15 +97,15 @@ namespace HHG_WPF_Fileversion
 
         public BitmapImage ShowImage(Player player)
             {
-            player.fileName = "Andromeda-Galaxy-Milky-Way.jpg";
-            player.filePath = Path.Combine(player.projectRoot, player.fileDir, player.fileName);
+            player.FileName = "Andromeda-Galaxy-Milky-Way.jpg";
+            player.FilePath = Path.Combine(player.ProjectRoot, player.FileDir, player.FileName);
 
-            bitmapImage = new BitmapImage(new Uri(player.filePath));
+            bitmapImage = new BitmapImage(new Uri(player.FilePath));
 
             //both ShowImage() methods: this might be a safer method according to ChatGPT. Not entirely sure I see the point, though.
             //the file is automatically released when the program ends anyway
             //bitmapImage.BeginInit();
-            //bitmapImage.UriSource = new Uri(player.filePath);
+            //bitmapImage.UriSource = new Uri(player.FilePath);
             //bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
             //bitmapImage.EndInit();
 
@@ -115,13 +115,13 @@ namespace HHG_WPF_Fileversion
         public BitmapImage ShowImage(bool missingInfo, Player player)
             {
             if (missingInfo)
-                player.fileName = "hhg2.png";
+                player.FileName = "hhg2.png";
             else
-                player.fileName = "DontPanic.jpg";
+                player.FileName = "DontPanic.jpg";
 
-            player.filePath = Path.Combine(player.projectRoot, player.fileDir, player.fileName);
+            player.FilePath = Path.Combine(player.ProjectRoot, player.FileDir, player.FileName);
 
-            bitmapImage = new BitmapImage(new Uri(player.filePath));
+            bitmapImage = new BitmapImage(new Uri(player.FilePath));
 
             return bitmapImage;
             }
