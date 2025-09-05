@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Main.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
 

@@ -24,8 +24,8 @@ namespace HHG_WPF_Fileversion
         ////declare and initialize a BitmapImage for use with...well, bitmaps AKA images
         //private BitmapImage bitmapImage = new BitmapImage();
 
-        public string projectRoot { get; set; } = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
-        public string fileDir { get; set; } = "Data";
+        public string projectRoot { get; } = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+        public string fileDir { get; } = "Data";
         public string fileName { get; set; } = "";
         public string filePath { get; set; } = "";
 

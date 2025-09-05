@@ -46,10 +46,6 @@ namespace HHG_WPF_Fileversion
             //init animation stuff
             gfxManager.InitImageControl(image);
 
-            //init music stuff
-            //update: moved init stuff into MusicManager constructor
-            //musicManager.InitMusicStuff(player);
-
             //set focus to FirstName textbox
             //note: prolly set this in MainWindow.xaml
             tbFirstName.Focus();
