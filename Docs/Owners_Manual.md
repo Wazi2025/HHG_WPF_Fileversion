@@ -6,7 +6,7 @@ Remember: *Don’t Panic!* – this software comes equipped with quotes, music, 
 
 ---
 
-## 📋 Features Checklist (as approved by the Vogon High Command™)
+## 📋 Features Checklist (as approved by the Vogon™ High Command)
 - [x] Quote generator (time-based and intergalactically reliable)
 - [x] Integrated HHG soundtrack (*Journey of the Sorcerer* by The Eagles)
 - [x] Visual hints for puzzled hitchhikers (bouncing logos included)
