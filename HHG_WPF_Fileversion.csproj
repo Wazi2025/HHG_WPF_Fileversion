@@ -13,7 +13,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <None Remove="Data\Andromeda-Galaxy-Milky-Way.jpg" />
+    <None Remove="Data\dontPanic.jpg" />
+    <None Remove="Data\hhg2.png" />
+    <None Remove="Data\Journey of the Sorcerer.mp4" />
+    <None Remove="Data\quotes.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\Andromeda-Galaxy-Milky-Way.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\dontPanic.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\hhg2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Journey of the Sorcerer.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\quotes.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
