@@ -163,17 +163,36 @@ namespace HHG_WPF_Fileversion.Classes
                 Canvas.SetLeft(textBlock, player.random.Next((int)MainCanvas.ActualWidth));
                 Canvas.SetTop(textBlock, player.random.Next((int)MainCanvas.ActualHeight));
 
-                //declare and instantiate a RotateTransform
+                //declare and instantiate a RotateTransform for text/quote rotation
                 RotateTransform angle = new RotateTransform();
 
-                //set angle randomly
+                //set starting angle randomly
                 angle.Angle = player.random.Next(360);
 
                 //set origin/rotation position to center of textBlock
                 textBlock.RenderTransformOrigin = new Point(0.5, 0.5);
 
+                //instantiate a fade effect
+                DoubleAnimation fade = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
+                fade.RepeatBehavior = RepeatBehavior.Forever;
+                fade.AutoReverse = true;
+
+                //instantiate an animation 
+                DoubleAnimation spin = new DoubleAnimation();
+                spin.From = 0;
+                spin.To = 360;
+                spin.Duration = TimeSpan.FromSeconds(player.random.Next(1, 10));
+                spin.RepeatBehavior = RepeatBehavior.Forever;
+
                 //attach angle to textBlocks RenderTransform
                 textBlock.RenderTransform = angle;
+
+                //begin opacity anim
+                textBlock.BeginAnimation(UIElement.OpacityProperty, fade);
+
+                //begin spin anim
+                angle.BeginAnimation(RotateTransform.AngleProperty, spin);
+
                 }
             }
 

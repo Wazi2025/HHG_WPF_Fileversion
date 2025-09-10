@@ -14,7 +14,7 @@ namespace HHG_WPF_Fileversion.Classes
         //this needs to be public since we adjust the song position in btnOK_Click
         public AudioFileReader AudioReader { get; set; }
 
-        private FadeInOutSampleProvider fade;
+        public FadeInOutSampleProvider fade { get; set; }
 
         //MusicManager constructor
         public MusicManager(Player player)

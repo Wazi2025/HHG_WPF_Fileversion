@@ -103,10 +103,11 @@ namespace HHG_WPF_Fileversion
             //show spinning hhg image, clear quotes, restore button
             if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
                 {
-                //set song position to it's most HHG's "moment"                
+                //set song position to it's most HHG's "moment"
+                musicManager.fade.BeginFadeOut(1000);
                 musicManager.AudioReader.CurrentTime = TimeSpan.FromMinutes(1.10);
+                musicManager.fade.BeginFadeIn(1000);
 
-                //player.fade.BeginFadeIn(1000);
                 image.Source = gfxManager.ShowImage(missingInfo, player);
                 image.Visibility = Visibility.Visible;
 
