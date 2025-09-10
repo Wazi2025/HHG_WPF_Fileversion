@@ -2,12 +2,12 @@
 using System.Windows;
 
 namespace HHG_WPF_Fileversion
-    {
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-        {
+    {
         //adding player field so we can instantiate player object in MainWindow's constructor
         private Player player;
 
@@ -22,7 +22,7 @@ namespace HHG_WPF_Fileversion
 
         //MainWindow's constructor
         public MainWindow()
-            {
+        {
             InitializeComponent();
 
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
@@ -51,10 +51,10 @@ namespace HHG_WPF_Fileversion
             //set textwrap on
             //don't need this, done in MainWindow.xaml
             //tbQuote.TextWrapping = TextWrapping.Wrap;
-            }
+        }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
-            {
+        {
             bool missingInfo = false;
 
             image.Visibility = Visibility.Hidden;
@@ -69,7 +69,7 @@ namespace HHG_WPF_Fileversion
 
             //show bouncing logo, clear quotes, restore button
             if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.FirstName) && String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 missingInfo = true;
 
                 image.Visibility = Visibility.Visible;
@@ -84,11 +84,11 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(MainGrid);
-                }
+            }
             else
             //show quote and logo, restore button
               if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 image.Visibility = Visibility.Visible;
                 tbQuote.Visibility = Visibility.Visible;
                 player.FetchQuote(tbQuote, player);
@@ -102,11 +102,11 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(MainGrid);
-                }
+            }
             else
             //show spinning hhg image, clear quotes, restore button
             if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 //set song position to it's most HHG's "moment"
                 musicManager.fade.BeginFadeOut(1000);
                 musicManager.AudioReader.CurrentTime = TimeSpan.FromMinutes(1.10);
@@ -126,29 +126,28 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(MainGrid);
-                }
+            }
             else
             //show chaos if any fields are empty
-                {
+            {
                 tbQuote.Visibility = Visibility.Hidden;
 
                 gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
                 gfxManager.MultiplyVogonQuote(player, MainCanvas);
 
                 gfxManager.RotateGrid(MainGrid, player.random);
-                }
-            }//end of btnOk_Click
+            }
+        }//end of btnOk_Click
 
 
         private void MainGrid_Unloaded(object sender, RoutedEventArgs e)
-            {
+        {
             //release and free NAudio resources
-
             //call Dispose method to free resources instead            
             musicManager.Dispose();
 
             //just in case the user decides to just close the program            
             gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
-            }
         }
     }
+}
