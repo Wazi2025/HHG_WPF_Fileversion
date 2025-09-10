@@ -165,6 +165,28 @@ namespace HHG_WPF_Fileversion.Classes
 
             }
 
+        public void RotateGrid(Grid MainGrid, Random random)
+            {
+            double min = 1.0;
+            double max = 20.0;
+            double value = random.NextDouble() * (max - min) + min;
+
+            RotateTransform rotate = new RotateTransform();
+
+            //instantiate an animation 
+            DoubleAnimation spin = new DoubleAnimation();
+            spin.From = 0;
+            spin.To = 360;
+            spin.Duration = TimeSpan.FromSeconds(value);
+            spin.RepeatBehavior = RepeatBehavior.Forever;
+
+            //test screen rotation
+            MainGrid.RenderTransformOrigin = new Point(0.5, 0.5);
+            MainGrid.RenderTransform = rotate;
+
+            rotate.BeginAnimation(RotateTransform.AngleProperty, spin);
+            }
+
         public void MultiplyVogonQuote(Player player, Canvas MainCanvas)
             {
             Debug.WriteLine(MainCanvas.IsLoaded); // should be true
@@ -288,6 +310,10 @@ namespace HHG_WPF_Fileversion.Classes
         //        }
         //    }
 
+        public void RestoreGridPosition(Grid MainGrid)
+            {
+            MainGrid.RenderTransform = null;
+            }
         public void RestoreButtonPosition(Button btnOK)
             {
             //restore button's original position (from MainWindow.xaml)

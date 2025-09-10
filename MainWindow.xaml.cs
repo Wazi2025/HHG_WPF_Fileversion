@@ -82,6 +82,8 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreButtonPosition(btnOK);
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
+
+                gfxManager.RestoreGridPosition(MainGrid);
                 }
             else
             //show quote and logo, restore button
@@ -98,6 +100,8 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreButtonPosition(btnOK);
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
+
+                gfxManager.RestoreGridPosition(MainGrid);
                 }
             else
             //show spinning hhg image, clear quotes, restore button
@@ -120,6 +124,8 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreButtonPosition(btnOK);
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
+
+                gfxManager.RestoreGridPosition(MainGrid);
                 }
             else
             //show chaos if any fields are empty
@@ -128,6 +134,8 @@ namespace HHG_WPF_Fileversion
 
                 gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
                 gfxManager.MultiplyVogonQuote(player, MainCanvas);
+
+                gfxManager.RotateGrid(MainGrid, player.random);
                 }
             }//end of btnOk_Click
 
@@ -135,15 +143,11 @@ namespace HHG_WPF_Fileversion
         private void MainGrid_Unloaded(object sender, RoutedEventArgs e)
             {
             //release and free NAudio resources
-            //musicManager.outputDevice.Stop();
-            //musicManager.outputDevice.Dispose();
-            //musicManager.audioFileReader.Dispose();
 
             //call Dispose method to free resources instead            
             musicManager.Dispose();
 
-            //just in case the user decides to just close the program
-            //RemoveExtraButtons();
+            //just in case the user decides to just close the program            
             gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
             }
         }
