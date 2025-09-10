@@ -135,6 +135,34 @@ namespace HHG_WPF_Fileversion.Classes
 
             //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
             //since no other elements use ZIndex we can just use 1
+
+            //test
+            double min = 1.0;
+            double max = 20.0;
+            double value = random.NextDouble() * (max - min) + min;
+
+            RotateTransform rotate = new RotateTransform();
+
+            //instantiate an animation 
+            DoubleAnimation spin = new DoubleAnimation();
+            spin.From = 0;
+            spin.To = 360;
+            spin.Duration = TimeSpan.FromSeconds(value);
+            spin.RepeatBehavior = RepeatBehavior.Forever;
+
+            btnOK.RenderTransformOrigin = new Point(0.5, 0.5);
+            btnOK.RenderTransform = rotate;
+
+            rotate.BeginAnimation(RotateTransform.AngleProperty, spin);
+
+            //instantiate a fade effect
+            DoubleAnimation fade = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
+            fade.RepeatBehavior = RepeatBehavior.Forever;
+            fade.AutoReverse = true;
+
+            //add fade effect to element (btnOK in this case)
+            btnOK.BeginAnimation(UIElement.OpacityProperty, fade);
+
             }
 
         public void MultiplyVogonQuote(Player player, Canvas MainCanvas)
@@ -143,57 +171,62 @@ namespace HHG_WPF_Fileversion.Classes
             Debug.WriteLine(VisualTreeHelper.GetParent(MainCanvas)); // should not be null
 
             //instantiate textblocks
-            for (int i = 0; i <= player.DontPanic; i++)
-                {
-                TextBlock textBlock = new TextBlock();
+            //for (int i = 0; i <= 10; i++)
+            //    {
+            TextBlock textBlock = new TextBlock();
 
-                //brush must be something light since the background is pretty dark
-                textBlock.Foreground = Brushes.White;
-                textBlock.Name = "Test";
+            //brush must be something light since the background is pretty dark
+            textBlock.Foreground = Brushes.White;
+            textBlock.Name = "Test";
 
-                //Add Vogon warning to new textblocks. This is a bit cludgy but it'll suffice for now
-                //Can't use textBlock.Text = tbQuote.Text since that is pure text only
-                textBlock.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
-                textBlock.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
+            //Add Vogon warning to new textblocks. This is a bit cludgy but it'll suffice for now
+            //Can't use textBlock.Text = tbQuote.Text since that is pure text only
+            textBlock.Inlines.Add(new Run(player.warning) { FontStyle = FontStyles.Italic });
+            textBlock.Inlines.Add(new Run(player.author) { FontWeight = FontWeights.Bold });
 
-                //add textBlock to MainCanvas
-                MainCanvas.Children.Add(textBlock);
+            //add textBlock to MainCanvas
+            MainCanvas.Children.Add(textBlock);
 
-                //randomize position of textblocks
-                Canvas.SetLeft(textBlock, player.random.Next((int)MainCanvas.ActualWidth));
-                Canvas.SetTop(textBlock, player.random.Next((int)MainCanvas.ActualHeight));
+            //randomize position of textblocks
+            Canvas.SetLeft(textBlock, player.random.Next((int)MainCanvas.ActualWidth));
+            Canvas.SetTop(textBlock, player.random.Next((int)MainCanvas.ActualHeight));
 
-                //declare and instantiate a RotateTransform for text/quote rotation
-                RotateTransform angle = new RotateTransform();
+            //declare and instantiate a RotateTransform for text/quote rotation
+            RotateTransform angle = new RotateTransform();
 
-                //set starting angle randomly
-                angle.Angle = player.random.Next(360);
+            //set starting angle randomly
+            angle.Angle = player.random.Next(360);
 
-                //set origin/rotation position to center of textBlock
-                textBlock.RenderTransformOrigin = new Point(0.5, 0.5);
+            //set origin/rotation position to center of textBlock
+            textBlock.RenderTransformOrigin = new Point(0.5, 0.5);
 
-                //instantiate a fade effect
-                DoubleAnimation fade = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
-                fade.RepeatBehavior = RepeatBehavior.Forever;
-                fade.AutoReverse = true;
+            //instantiate a fade effect
+            DoubleAnimation fade = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
+            fade.RepeatBehavior = RepeatBehavior.Forever;
+            fade.AutoReverse = true;
 
-                //instantiate an animation 
-                DoubleAnimation spin = new DoubleAnimation();
-                spin.From = 0;
-                spin.To = 360;
-                spin.Duration = TimeSpan.FromSeconds(player.random.Next(1, 10));
-                spin.RepeatBehavior = RepeatBehavior.Forever;
+            //test
+            double min = 1.0;
+            double max = 20.0;
+            double value = player.random.NextDouble() * (max - min) + min;
 
-                //attach angle to textBlocks RenderTransform
-                textBlock.RenderTransform = angle;
+            //instantiate an animation 
+            DoubleAnimation spin = new DoubleAnimation();
+            spin.From = 0;
+            spin.To = 360;
+            //spin.Duration = TimeSpan.FromSeconds(player.random.Next(1, 10));
+            spin.Duration = TimeSpan.FromSeconds(value);
+            spin.RepeatBehavior = RepeatBehavior.Forever;
 
-                //begin opacity anim
-                textBlock.BeginAnimation(UIElement.OpacityProperty, fade);
+            //attach angle to textBlocks RenderTransform
+            textBlock.RenderTransform = angle;
 
-                //begin spin anim
-                angle.BeginAnimation(RotateTransform.AngleProperty, spin);
+            //begin opacity anim
+            textBlock.BeginAnimation(UIElement.OpacityProperty, fade);
 
-                }
+            //begin spin anim
+            angle.BeginAnimation(RotateTransform.AngleProperty, spin);
+            //}
             }
 
         public void RemoveExtraQuotes(TextBlock tbQuote, Canvas canvas)
@@ -260,6 +293,9 @@ namespace HHG_WPF_Fileversion.Classes
             //restore button's original position (from MainWindow.xaml)
             Canvas.SetLeft(btnOK, 165);
             Canvas.SetTop(btnOK, 230);
+
+            //resett RenderTransform
+            btnOK.RenderTransform = null;
             }
 
         }//end of GfxManager
