@@ -83,7 +83,8 @@ namespace HHG_WPF_Fileversion
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
-                gfxManager.RestoreGridPosition(MainGrid);
+                gfxManager.RestoreGridPosition(SubGrid);
+                gfxManager.RestoreTextBox(tbAge);
                 }
             else
             //show quote and logo, restore button
@@ -101,7 +102,8 @@ namespace HHG_WPF_Fileversion
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
-                gfxManager.RestoreGridPosition(MainGrid);
+                gfxManager.RestoreGridPosition(SubGrid);
+                gfxManager.RestoreTextBox(tbAge);
                 }
             else
             //show spinning hhg image, clear quotes, restore button
@@ -125,7 +127,8 @@ namespace HHG_WPF_Fileversion
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
-                gfxManager.RestoreGridPosition(MainGrid);
+                gfxManager.RestoreGridPosition(SubGrid);
+                gfxManager.RestoreTextBox(tbAge);
                 }
             else
             //show chaos if any fields are empty
@@ -135,7 +138,8 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
                 gfxManager.MultiplyVogonQuote(player, MainCanvas);
 
-                gfxManager.RotateGrid(MainGrid, player.random);
+                gfxManager.RotateSubGrid(SubGrid, player.random);
+                gfxManager.TransformTextBox(tbAge, player.random);
                 }
             }//end of btnOk_Click
 

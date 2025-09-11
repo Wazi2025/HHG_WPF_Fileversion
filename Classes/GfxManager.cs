@@ -138,22 +138,31 @@ namespace HHG_WPF_Fileversion.Classes
 
             //test
             double min = 1.0;
-            double max = 20.0;
+            double max = 14.0;
             double value = random.NextDouble() * (max - min) + min;
 
-            RotateTransform rotate = new RotateTransform();
+            //RotateTransform rotate = new RotateTransform();
 
             //instantiate an animation 
-            DoubleAnimation spin = new DoubleAnimation();
-            spin.From = 0;
-            spin.To = 360;
-            spin.Duration = TimeSpan.FromSeconds(value);
-            spin.RepeatBehavior = RepeatBehavior.Forever;
+            DoubleAnimation anim = new DoubleAnimation();
+            anim.From = 0;
+            anim.To = 10;
+            anim.Duration = TimeSpan.FromSeconds(value);
+            anim.RepeatBehavior = RepeatBehavior.Forever;
+            anim.AutoReverse = true;
 
-            btnOK.RenderTransformOrigin = new Point(0.5, 0.5);
-            btnOK.RenderTransform = rotate;
+            //btnOK.RenderTransformOrigin = new Point(0.5, 0.5);
+            //btnOK.RenderTransform = rotate;
 
-            rotate.BeginAnimation(RotateTransform.AngleProperty, spin);
+            //rotate.BeginAnimation(RotateTransform.AngleProperty, spin);
+
+            //scale
+            ScaleTransform scale = new ScaleTransform();
+
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, anim);
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, anim);
+
+            btnOK.RenderTransform = scale;
 
             //instantiate a fade effect
             DoubleAnimation fade = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(5));
@@ -165,7 +174,40 @@ namespace HHG_WPF_Fileversion.Classes
 
             }
 
-        public void RotateGrid(Grid MainGrid, Random random)
+        public void TransformTextBox(TextBox tbAge, Random random)
+            {
+            //double min = 1.0;
+            //double max = 7.0;
+            //double value = random.NextDouble() * (max - min) + min;
+
+            RotateTransform rotate = new RotateTransform();
+            DoubleAnimation anim = new DoubleAnimation();
+
+            //tbAge.RenderTransformOrigin = new Point(0.0, 0.0);
+            tbAge.RenderTransform = rotate;
+
+            BounceEase bounceEase = new BounceEase();
+            bounceEase.Bounces = 3;
+            bounceEase.Bounciness = 2;
+            bounceEase.EasingMode = EasingMode.EaseOut;
+
+            anim.EasingFunction = bounceEase;
+
+            anim.From = 0;
+            anim.To = 90;
+
+            anim.Duration = TimeSpan.FromSeconds(1);
+            //anim.RepeatBehavior = RepeatBehavior.Forever;
+
+            rotate.BeginAnimation(RotateTransform.AngleProperty, anim);
+            }
+
+        public void RestoreTextBox(TextBox tbFirstName)
+            {
+            tbFirstName.RenderTransform = null;
+            }
+
+        public void RotateSubGrid(Grid SubGrid, Random random)
             {
             double min = 1.0;
             double max = 20.0;
@@ -181,8 +223,8 @@ namespace HHG_WPF_Fileversion.Classes
             spin.RepeatBehavior = RepeatBehavior.Forever;
 
             //test screen rotation
-            MainGrid.RenderTransformOrigin = new Point(0.5, 0.5);
-            MainGrid.RenderTransform = rotate;
+            SubGrid.RenderTransformOrigin = new Point(0.5, 0.5);
+            SubGrid.RenderTransform = rotate;
 
             rotate.BeginAnimation(RotateTransform.AngleProperty, spin);
             }
@@ -228,14 +270,25 @@ namespace HHG_WPF_Fileversion.Classes
             fade.AutoReverse = true;
 
             //test
-            double min = 1.0;
+            double min = 4.0;
             double max = 20.0;
             double value = player.random.NextDouble() * (max - min) + min;
 
             //instantiate an animation 
             DoubleAnimation spin = new DoubleAnimation();
-            spin.From = 0;
-            spin.To = 360;
+
+            //set a sort of random spin direction
+            if (value > 10)
+                {
+                spin.From = 0;
+                spin.To = 360;
+                }
+            else
+                {
+                spin.From = -1;
+                spin.To = -360;
+                }
+
             //spin.Duration = TimeSpan.FromSeconds(player.random.Next(1, 10));
             spin.Duration = TimeSpan.FromSeconds(value);
             spin.RepeatBehavior = RepeatBehavior.Forever;
@@ -250,6 +303,7 @@ namespace HHG_WPF_Fileversion.Classes
             angle.BeginAnimation(RotateTransform.AngleProperty, spin);
             //}
             }
+
 
         public void RemoveExtraQuotes(TextBlock tbQuote, Canvas canvas)
             {
@@ -310,9 +364,9 @@ namespace HHG_WPF_Fileversion.Classes
         //        }
         //    }
 
-        public void RestoreGridPosition(Grid MainGrid)
+        public void RestoreGridPosition(Grid SubGrid)
             {
-            MainGrid.RenderTransform = null;
+            SubGrid.RenderTransform = null;
             }
         public void RestoreButtonPosition(Button btnOK)
             {
