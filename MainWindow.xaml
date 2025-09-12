@@ -7,7 +7,7 @@
         mc:Ignorable="d"        
         Background="Black" x:Name="mainWindow"
         FocusManager.FocusedElement="{Binding ElementName=tbFirstName}"
-        Title="HHG time-based quotes" Height="Auto" Width="Auto">
+        Title="HHG time-based quotes" Height="Auto" Width="Auto" Loaded="mainWindow_Loaded" Closed="mainWindow_Closed">
     <Grid x:Name="MainGrid" Unloaded="MainGrid_Unloaded">
         <UIElement.RenderTransform>
             <TransformGroup>
@@ -17,23 +17,24 @@
                 <TranslateTransform/>
             </TransformGroup>
         </UIElement.RenderTransform>
-        <Grid x:Name="SubGrid">
-        <Canvas x:Name="MainCanvas" Width="800" Height="600" HorizontalAlignment="Left">
+        <Grid x:Name="SubGrid" Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+            <TextBox x:Name="tbLastName" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+            <TextBox x:Name="tbAge" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
+            <Label  Foreground="White" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top"/>
+            <Label  Foreground="White" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top"/>
+            <Label  Foreground="White" Content="First name" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btnOK" Content="Get Quote" Click="btnOK_Click" Margin="42,250,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" IsDefault="True"/>
+
+            <Canvas x:Name="MainCanvas" Width="800" Height="600" HorizontalAlignment="Left">
             <TextBlock x:Name="tbQuote" TextWrapping="Wrap" Canvas.Left="10" Canvas.Top="280" Foreground="White" Height="165" Width="400"/>
-            <Button x:Name="btnOK" Canvas.Left="165" Canvas.Top="230" Content="Get Quote" Click="btnOK_Click" Canvas.ZIndex="1"  IsDefault="True"/>            
         </Canvas>
         </Grid>
         <Grid Width="800" Height="600" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="center" Width="412" Height="306" Opacity="0.25"/>
         </Grid>
-        <Grid x:Name="tbGrid">
-        <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Margin="42,77,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbLastName" HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <TextBox x:Name="tbAge" HorizontalAlignment="Left" Margin="42,195,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="194" RenderTransformOrigin="-0.114,0.406"/>
-        <Label  Foreground="White" Content="Age" HorizontalAlignment="Left" Margin="42,165,0,0" VerticalAlignment="Top"/>
-        <Label  Foreground="White" Content="Last name" HorizontalAlignment="Left" Margin="42,110,0,0" VerticalAlignment="Top"/>
-        <Label  Foreground="White" Content="First name" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top"/>
-        </Grid>
+        
+                
     </Grid>
            
 </Window>
