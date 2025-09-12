@@ -104,8 +104,6 @@ namespace HHG_WPF_Fileversion
                 gfxManager.FadeInImage(0.50, image);
                 gfxManager.ZoomIn(missingInfo, player);
 
-                gfxManager.RestoreButtonPosition(btnOK);
-
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(SubGrid);
@@ -123,8 +121,6 @@ namespace HHG_WPF_Fileversion
                 image.Source = gfxManager.ShowImage(true, player);
                 gfxManager.FadeInImage(0.50, image);
                 gfxManager.ZoomIn(missingInfo, player);
-
-                //gfxManager.RestoreButtonPosition(btnOK);
 
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
@@ -150,8 +146,6 @@ namespace HHG_WPF_Fileversion
                 gfxManager.ZoomIn(missingInfo, player);
                 gfxManager.StartImageSpin();
 
-                //gfxManager.RestoreButtonPosition(btnOK);
-
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(SubGrid);
@@ -159,33 +153,16 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreButton(btnOK);
                 }
             else
-            //show chaos if any fields are empty
                 {
                 if (!timer.IsEnabled)
                     timer.Start();
 
                 tbQuote.Visibility = Visibility.Hidden;
-
-                //gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
-                //gfxManager.MultiplyVogonQuote(player, MainCanvas);
-
                 gfxManager.RotateSubGrid(SubGrid, player.random);
-
-                //gfxManager.TransformTextBox(tbAge, player.random);
                 gfxManager.TransformButton(btnOK, player.random);
                 }
             }//end of btnOk_Click
 
-
-        private void MainGrid_Unloaded(object sender, RoutedEventArgs e)
-            {
-            ////release and free NAudio resources
-            ////call Dispose method to free resources instead            
-            //musicManager.Dispose();
-
-            ////just in case the user decides to just close the program            
-            //gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
-            }
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
             {

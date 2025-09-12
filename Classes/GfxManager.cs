@@ -126,23 +126,23 @@ namespace HHG_WPF_Fileversion.Classes
             return bitmapImage;
             }
 
-        public void RandomizeButton(Canvas canvas, Button btnOK, Random random)
-            {
-            //randomize button placement or technically the Canvas
-            //note: SetLeft is a static method, hence we can only access it with it's type
-            Canvas.SetLeft(btnOK, random.Next((int)canvas.ActualWidth));
-            Canvas.SetTop(btnOK, random.Next((int)canvas.ActualHeight));
+        //public void RandomizeButton(Canvas canvas, Button btnOK, Random random)
+        //    {
+        //    //randomize button placement or technically the Canvas
+        //    //note: SetLeft is a static method, hence we can only access it with it's type
+        //    Canvas.SetLeft(btnOK, random.Next((int)canvas.ActualWidth));
+        //    Canvas.SetTop(btnOK, random.Next((int)canvas.ActualHeight));
 
-            //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
-            //since no other elements use ZIndex we can just use 1
-            }
+        //    //note: Canvas.ZIndex="1" in MainWindow.xaml makes sure the button is "on top" so it's reachable with mouse too
+        //    //since no other elements use ZIndex we can just use 1
+        //    }
 
-        public void RestoreButtonPosition(Button btnOK)
-            {
-            //restore button's original position (from MainWindow.xaml)
-            Canvas.SetLeft(btnOK, 165);
-            Canvas.SetTop(btnOK, 230);
-            }
+        //public void RestoreButtonPosition(Button btnOK)
+        //    {
+        //    //restore button's original position (from MainWindow.xaml)
+        //    Canvas.SetLeft(btnOK, 165);
+        //    Canvas.SetTop(btnOK, 230);
+        //    }
 
         public void TransformButton(Button btnOK, Random random)
             {
@@ -157,30 +157,30 @@ namespace HHG_WPF_Fileversion.Classes
             anim.To = 360;
             anim.Duration = TimeSpan.FromSeconds(value);
             anim.RepeatBehavior = RepeatBehavior.Forever;
-            //anim.AutoReverse = true;
 
-            //instantiate an animation 
-            DoubleAnimation anim2 = new DoubleAnimation();
-            anim2.From = 0;
-            anim2.To = 20;
-            anim2.Duration = TimeSpan.FromSeconds(value);
-            anim2.RepeatBehavior = RepeatBehavior.Forever;
-            anim2.AutoReverse = true;
+            //instantiate an animation
+            DoubleAnimation animScaling = new DoubleAnimation();
+            animScaling.From = 1;
+            animScaling.To = 3;
+            animScaling.Duration = TimeSpan.FromSeconds(value);
+            animScaling.RepeatBehavior = RepeatBehavior.Forever;
+            animScaling.AutoReverse = true;
 
             //rotate
             RotateTransform rotate = new RotateTransform();
+            rotate.BeginAnimation(RotateTransform.AngleProperty, anim);
 
             btnOK.RenderTransformOrigin = new Point(0.5, 0.5);
-
-            rotate.BeginAnimation(RotateTransform.AngleProperty, anim);
 
             //scale
             ScaleTransform scale = new ScaleTransform();
 
-            scale.BeginAnimation(ScaleTransform.ScaleXProperty, anim2);
-            scale.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
+            //From and To from anim2 refers to scaling here, in this case size of the button
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, animScaling);
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, animScaling);
 
             //transformgroup
+            //we're using more than one animation on the same element
             TransformGroup group = new TransformGroup();
             group.Children.Add(rotate);
             group.Children.Add(scale);
@@ -205,11 +205,6 @@ namespace HHG_WPF_Fileversion.Classes
 
         public void TransformTextBox(TextBox tbAge)
             {
-            //double min = 1.0;
-            //double max = 7.0;
-            //double value = random.NextDouble() * (max - min) + min;
-
-
             RotateTransform rotate = new RotateTransform();
             DoubleAnimation anim = new DoubleAnimation();
 
@@ -227,7 +222,6 @@ namespace HHG_WPF_Fileversion.Classes
             anim.To = 90;
 
             anim.Duration = TimeSpan.FromSeconds(1);
-            //anim.RepeatBehavior = RepeatBehavior.Forever;
 
             rotate.BeginAnimation(RotateTransform.AngleProperty, anim);
             }
@@ -239,7 +233,7 @@ namespace HHG_WPF_Fileversion.Classes
 
         public void RotateSubGrid(Grid SubGrid, Random random)
             {
-            double min = 1.0;
+            double min = 5.0;
             double max = 20.0;
             double value = random.NextDouble() * (max - min) + min;
 
@@ -252,7 +246,7 @@ namespace HHG_WPF_Fileversion.Classes
             spin.Duration = TimeSpan.FromSeconds(value);
             spin.RepeatBehavior = RepeatBehavior.Forever;
 
-            //test screen rotation
+            //screen rotation
             SubGrid.RenderTransformOrigin = new Point(0.5, 0.5);
             SubGrid.RenderTransform = rotate;
 
