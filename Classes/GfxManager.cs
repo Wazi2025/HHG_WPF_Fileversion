@@ -175,7 +175,7 @@ namespace HHG_WPF_Fileversion.Classes
             //scale
             ScaleTransform scale = new ScaleTransform();
 
-            //From and To from anim2 refers to scaling here, in this case size of the button
+            //From and To from anim2 refers to scaling here, in this case the size of the button
             scale.BeginAnimation(ScaleTransform.ScaleXProperty, animScaling);
             scale.BeginAnimation(ScaleTransform.ScaleYProperty, animScaling);
 
