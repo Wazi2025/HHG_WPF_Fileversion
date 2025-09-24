@@ -226,8 +226,9 @@ namespace HHG_WPF_Fileversion.Classes
             rotate.BeginAnimation(RotateTransform.AngleProperty, anim);
             }
 
-        public void RestoreTextBox(TextBox tbAge)
+        public void RestoreTextBox(TextBox tbAge, MainWindow mainWindow)
             {
+            mainWindow.elapsedTime = TimeSpan.Zero;
             tbAge.RenderTransform = null;
             }
 

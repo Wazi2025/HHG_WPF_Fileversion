@@ -20,7 +20,7 @@ namespace HHG_WPF_Fileversion
 
         //adding timer field
         private DispatcherTimer timer;
-        private TimeSpan elapsedTime;
+        public TimeSpan elapsedTime { get; set; }
 
 
         //MainWindow's constructor
@@ -48,7 +48,7 @@ namespace HHG_WPF_Fileversion
 
             // Create and configure timer
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += Timer_Tick;
             timer.Start();
 
@@ -67,12 +67,19 @@ namespace HHG_WPF_Fileversion
 
         private void Timer_Tick(object sender, EventArgs e)
             {
+
+            if (elapsedTime < TimeSpan.FromSeconds(15))
+                counter.Content = elapsedTime.ToString(@"ss");
+
             elapsedTime = elapsedTime.Add(TimeSpan.FromSeconds(1));
 
             gfxManager.MultiplyVogonQuote(player, MainCanvas);
 
             if (elapsedTime == TimeSpan.FromSeconds(15))
+                {
                 gfxManager.TransformTextBox(tbAge);
+                counter.Content = "";
+                }
 
             }
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -107,7 +114,7 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(SubGrid);
-                gfxManager.RestoreTextBox(tbAge);
+                gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
                 }
             else
@@ -125,7 +132,7 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(SubGrid);
-                gfxManager.RestoreTextBox(tbAge);
+                gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
                 }
             else
@@ -149,7 +156,7 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
                 gfxManager.RestoreGridPosition(SubGrid);
-                gfxManager.RestoreTextBox(tbAge);
+                gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
                 }
             else
