@@ -175,6 +175,7 @@ namespace HHG_WPF_Fileversion
             //gfxManager.TransformTextBox(tbAge, player.random);
             gfxManager.TransformButton(btnOK, player.random);
 
+
             }
 
         private void mainWindow_Closed(object sender, EventArgs e)
