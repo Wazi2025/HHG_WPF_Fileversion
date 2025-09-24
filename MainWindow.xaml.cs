@@ -3,12 +3,12 @@ using System.Windows;
 using System.Windows.Threading;
 
 namespace HHG_WPF_Fileversion
-    {
+{
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-        {
+    {
         //adding player field so we can instantiate player object in MainWindow's constructor
         private Player player;
 
@@ -25,7 +25,7 @@ namespace HHG_WPF_Fileversion
 
         //MainWindow's constructor
         public MainWindow()
-            {
+        {
             InitializeComponent();
 
             //Instantiate player object and pass it as a parameter whenever we need to access it outside this (MainWindow) class
@@ -53,6 +53,7 @@ namespace HHG_WPF_Fileversion
             timer.Start();
 
             elapsedTime = TimeSpan.Zero;
+            counter.Content = "";
 
 
             //set focus to FirstName textbox
@@ -63,10 +64,10 @@ namespace HHG_WPF_Fileversion
             //set textwrap on
             //don't need this, done in MainWindow.xaml
             //tbQuote.TextWrapping = TextWrapping.Wrap;
-            }
+        }
 
         private void Timer_Tick(object sender, EventArgs e)
-            {
+        {
 
             if (elapsedTime < TimeSpan.FromSeconds(15))
                 counter.Content = elapsedTime.ToString(@"ss");
@@ -76,14 +77,14 @@ namespace HHG_WPF_Fileversion
             gfxManager.MultiplyVogonQuote(player, MainCanvas);
 
             if (elapsedTime == TimeSpan.FromSeconds(15))
-                {
+            {
                 gfxManager.TransformTextBox(tbAge);
                 counter.Content = "";
-                }
-
             }
+
+        }
         private void btnOK_Click(object sender, RoutedEventArgs e)
-            {
+        {
             //stop timer
             timer.Stop();
 
@@ -101,7 +102,7 @@ namespace HHG_WPF_Fileversion
 
             //show bouncing logo, clear quotes, restore button
             if (player.Age == player.DontPanic && String.IsNullOrWhiteSpace(player.FirstName) && String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 missingInfo = true;
 
                 image.Visibility = Visibility.Visible;
@@ -116,11 +117,11 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreGridPosition(SubGrid);
                 gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
-                }
+            }
             else
             //show quote and logo, restore button
               if (player.Age != player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 image.Visibility = Visibility.Visible;
                 tbQuote.Visibility = Visibility.Visible;
                 player.FetchQuote(tbQuote, player);
@@ -134,11 +135,11 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreGridPosition(SubGrid);
                 gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
-                }
+            }
             else
             //show spinning hhg image, clear quotes, restore button
             if (player.Age == player.DontPanic && !String.IsNullOrWhiteSpace(player.FirstName) && !String.IsNullOrWhiteSpace(player.LastName))
-                {
+            {
                 //set song position to it's most HHG's "moment"
                 musicManager.fade.BeginFadeOut(1000);
                 musicManager.AudioReader.CurrentTime = TimeSpan.FromMinutes(1.10);
@@ -158,21 +159,21 @@ namespace HHG_WPF_Fileversion
                 gfxManager.RestoreGridPosition(SubGrid);
                 gfxManager.RestoreTextBox(tbAge, mainWindow);
                 gfxManager.RestoreButton(btnOK);
-                }
+            }
             else
-                {
+            {
                 if (!timer.IsEnabled)
                     timer.Start();
 
                 tbQuote.Visibility = Visibility.Hidden;
                 gfxManager.RotateSubGrid(SubGrid, player.random);
                 gfxManager.TransformButton(btnOK, player.random);
-                }
-            }//end of btnOk_Click
+            }
+        }//end of btnOk_Click
 
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
-            {
+        {
             tbQuote.Visibility = Visibility.Hidden;
 
             //gfxManager.RandomizeButton(MainCanvas, btnOK, player.random);
@@ -183,10 +184,10 @@ namespace HHG_WPF_Fileversion
             gfxManager.TransformButton(btnOK, player.random);
 
 
-            }
+        }
 
         private void mainWindow_Closed(object sender, EventArgs e)
-            {
+        {
             //release and free NAudio resources
             //call Dispose method to free resources instead            
             musicManager.Dispose();
@@ -194,6 +195,6 @@ namespace HHG_WPF_Fileversion
             //just in case the user decides to just close the program            
             gfxManager.RemoveExtraQuotes(tbQuote, MainCanvas);
 
-            }
         }
     }
+}
