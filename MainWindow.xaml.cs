@@ -70,7 +70,9 @@ namespace HHG_WPF_Fileversion
         {
 
             if (elapsedTime < TimeSpan.FromSeconds(15))
+            {
                 counter.Content = elapsedTime.ToString(@"ss");
+            }
 
             elapsedTime = elapsedTime.Add(TimeSpan.FromSeconds(1));
 

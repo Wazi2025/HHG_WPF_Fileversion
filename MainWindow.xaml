@@ -10,7 +10,7 @@
         Title="HHG time-based quotes" Height="Auto" Width="Auto" Loaded="mainWindow_Loaded" Closed="mainWindow_Closed">
 
     <Grid>    
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="SubGrid" >
+      <Grid VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="SubGrid" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -47,7 +47,14 @@
         <Image Grid.Row="8"  x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Width="412" Height="306" Opacity="0.25"/>
         
     </Grid>
-        <Label x:Name="counter" Grid.Row="9" FontSize="50" Foreground="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center">Counter</Label>
+        <Label x:Name="counter" Grid.Row="9" FontSize="50" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center">Counter
+            <Label.Effect>
+                <DropShadowEffect Color="WhiteSmoke"
+                          BlurRadius="1"
+                          ShadowDepth="2"
+                          Opacity="1" />
+            </Label.Effect>
+        </Label>
 
     </Grid>
         
