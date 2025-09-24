@@ -50,7 +50,7 @@
         <Label x:Name="counter" Grid.Row="9" FontSize="50" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center">Counter
             <Label.Effect>
                 <DropShadowEffect Color="WhiteSmoke"
-                          BlurRadius="1"
+                          BlurRadius="0"
                           ShadowDepth="2"
                           Opacity="1" />
             </Label.Effect>

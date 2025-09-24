@@ -69,7 +69,7 @@ namespace HHG_WPF_Fileversion
         private void Timer_Tick(object sender, EventArgs e)
         {
 
-            if (elapsedTime < TimeSpan.FromSeconds(15))
+            if (elapsedTime < TimeSpan.FromSeconds(17))
             {
                 counter.Content = elapsedTime.ToString(@"ss");
             }
@@ -78,7 +78,7 @@ namespace HHG_WPF_Fileversion
 
             gfxManager.MultiplyVogonQuote(player, MainCanvas);
 
-            if (elapsedTime == TimeSpan.FromSeconds(15))
+            if (elapsedTime == TimeSpan.FromSeconds(17))
             {
                 gfxManager.TransformTextBox(tbAge);
                 counter.Content = "";
